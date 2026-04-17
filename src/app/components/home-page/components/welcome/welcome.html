@@ -1,0 +1,20 @@
+<section
+  class="grid gap-6 rounded-3xl border border-slate-200 bg-white px-7 py-6 shadow-sm shadow-slate-900/5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,420px)] lg:items-center sm:px-8"
+>
+  <div class="flex min-h-36 items-center gap-6 sm:gap-7">
+    <div
+      class="flex h-22 w-22 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-200 ring-4 ring-slate-100"
+    >
+      <img src="assets/demo-user.png" alt="User avatar" class="h-full w-full object-cover" />
+    </div>
+
+    <div class="flex min-w-0 flex-1 flex-col justify-center space-y-2">
+      <p class="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Welcome back</p>
+      <p class="truncate text-3xl font-bold tracking-tight text-slate-900">
+        {{ (username$ | async) || 'User' }}
+      </p>
+    </div>
+  </div>
+
+  <app-resume-coins-collections class="block" />
+</section>

@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "gh-build": "ng build --base-href 'https://cicciotecchio.github.io/My-Aws-Coins-Collections/'",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint ."

@@ -83,6 +83,6 @@ const INITIAL_COIN_COLLECTION: Coin[] = [
 })
 export class CoinService {
   getCoinCollection(): Observable<Coin[]> {
-    return of(INITIAL_COIN_COLLECTION).pipe(delay(3000));
+    return of(INITIAL_COIN_COLLECTION).pipe(delay(1000));
   }
 }

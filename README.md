@@ -18,6 +18,12 @@ Note: the login is not real. You can enter any username and any password to acce
 
 ## How to run
 
+Set your node environment with:
+
+```bash
+nvm use
+```
+
 Install dependencies:
 
 ```bash

@@ -4,13 +4,13 @@ import { HomePage } from './components/home-page/home-page';
 import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-  /*{
-    path: '',
-    component: LoginPage,
-  },*/
   {
     path: '',
+    component: LoginPage,
+  },
+  {
+    path: 'home',
     component: HomePage,
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
   },
 ];

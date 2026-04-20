@@ -10,3 +10,15 @@ export const addCoin = createAction(
   '[Coin Component] add a coin inside the collection',
   props<{ coin: Coin }>(),
 );
+
+export const getCoinsCollection = createAction('[Coin Component] get coins collection');
+
+export const getCoinsCollectionFailure = createAction(
+  '[Coin Component] call to getCoinsCollection Failed',
+  props<{ error: string }>(),
+);
+
+export const getCoinsCollectionSuccess = createAction(
+  '[Coin Component] call to getCoinsCollection Success',
+  props<{ coinsCollections: Coin[] }>(),
+);

@@ -21,7 +21,7 @@ export class ResumeCoinsCollection implements OnInit {
   protected coinsCollection$: Observable<ICoin[]> = of([]);
 
   ngOnInit(): void {
-    this.coinsCollection$ = this.store.select((state) => state.coinCollection);
+    this.coinsCollection$ = this.store.select((state) => state.coinCollection.coins);
   }
 
   getCoinInfo(coinsCollection: ICoin[]): ICoinInfo {

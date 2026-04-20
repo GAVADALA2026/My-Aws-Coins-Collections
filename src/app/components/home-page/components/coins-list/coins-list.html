@@ -1,4 +1,14 @@
-@if (coinsCollection$ | async; as coinsCollection) {
+@if (isLoading$ | async) {
+  <section class="spinner-wrapper py-12">
+    <mat-spinner diameter="48" />
+  </section>
+} @else if (error$ | async; as error) {
+  <section class="feedback-wrapper py-12">
+    <p class="feedback-title">Unable to load your coin collection.</p>
+    <p class="feedback-message">{{ error }}</p>
+    <button mat-flat-button type="button" (click)="loadCoins()">Retry</button>
+  </section>
+} @else if (coinsCollection$ | async; as coinsCollection) {
   <section
     class="mx-auto grid max-w-6xl justify-items-center gap-6 py-8 sm:grid-cols-2 xl:grid-cols-3"
   >

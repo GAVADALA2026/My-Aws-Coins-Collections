@@ -1,59 +1,33 @@
 # MyAwsCoinsCollection
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+MyAwsCoinsCollection is a teaching app created for the seminar of the `Web Technologies` course at the Università degli Studi di Salerno.
 
-## Development server
+The application is a small Angular project focused on a coin collection experience with a fake login flow used only for demo purposes.
 
-To start a local development server, run:
+Note: the login is not real. You can enter any username and any password to access the app.
 
-```bash
-ng serve
-```
+## Technology stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Angular `21.2.7`
+- Angular Material `21.2.7`
+- NgRx Store and Effects `21.1.0`
+- RxJS `7.8.0`
+- Tailwind CSS `4.2.2`
+- Node.js `24.x`
+- npm `11.12.1`
 
-## Code scaffolding
+## How to run
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install dependencies:
 
 ```bash
-ng generate --help
+npm i
 ```
 
-## Building
-
-To build the project run:
+Start the development server:
 
 ```bash
-ng build
+npm run start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The app will be available at `http://localhost:4200/`.

@@ -45,13 +45,22 @@ describe('NewCoin', () => {
     page().estimatedValueCtrl.setValue(18);
   };
 
-  it('initializes all form controls and rejects missing name/country', () => {
-    expect(page().group.contains('nameCtrl')).toBe(true);
-    expect(page().group.contains('countryCtrl')).toBe(true);
-    expect(page().group.invalid).toBe(true);
-    page().submit();
-    expect(store.dispatch).not.toHaveBeenCalled();
+  it('initializes all form controls', () => {
+    expect(['nameCtrl', 'descriptionCtrl', 'countryCtrl', 'yearCtrl', 'currencyValueCtrl', 'estimatedValueCtrl']
+      .every((controlName) => page().group.contains(controlName))).toBe(true);
   });
+
+  it.each(['nameCtrl', 'countryCtrl'] as const)(
+    'rejects an empty required %s and does not dispatch',
+    (controlName) => {
+      setValidValues();
+      page()[controlName].setValue('');
+      page().submit();
+
+      expect(page().group.invalid).toBe(true);
+      expect(store.dispatch).not.toHaveBeenCalled();
+    },
+  );
 
   it.each([0, -1])('rejects year %i', (year) => {
     setValidValues();
@@ -76,13 +85,19 @@ describe('NewCoin', () => {
     }) }));
   });
 
-  it('allows only control keys and blocks non-digits', () => {
-    const backspace = new KeyboardEvent('keydown', { key: 'Backspace', cancelable: true });
-    const letter = new KeyboardEvent('keydown', { key: 'a', cancelable: true });
-    page().allowOnlyDigits(backspace);
-    page().allowOnlyDigits(letter);
-    expect(backspace.defaultPrevented).toBe(false);
-    expect(letter.defaultPrevented).toBe(true);
+  it.each(['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'])(
+    'allows control key %s',
+    (key) => {
+      const event = new KeyboardEvent('keydown', { key, cancelable: true });
+      page().allowOnlyDigits(event);
+      expect(event.defaultPrevented).toBe(false);
+    },
+  );
+
+  it.each(['a', '-', '.'])('blocks non-digit key %s', (key) => {
+    const event = new KeyboardEvent('keydown', { key, cancelable: true });
+    page().allowOnlyDigits(event);
+    expect(event.defaultPrevented).toBe(true);
   });
 
   it('blocks a fifth year digit unless the existing input is selected', () => {
@@ -110,5 +125,47 @@ describe('NewCoin', () => {
     Object.defineProperty(event, 'target', { value: input });
     page().sanitizeDigits(event, 4);
     expect(input.value).toBe('2002');
+  });
+
+  it('accepts the minimum valid year of one', () => {
+    setValidValues();
+    page().yearCtrl.setValue(1);
+    expect(page().group.valid).toBe(true);
+  });
+
+  it.each(['currencyValueCtrl', 'estimatedValueCtrl'] as const)(
+    'rejects a negative value in %s and does not dispatch',
+    (controlName) => {
+      setValidValues();
+      page()[controlName].setValue(-1);
+      page().submit();
+
+      expect(page().group.invalid).toBe(true);
+      expect(store.dispatch).not.toHaveBeenCalled();
+    },
+  );
+
+  it('allows digit input with no maximum length', () => {
+    const input = document.createElement('input');
+    input.value = '123456789';
+    input.selectionStart = input.value.length;
+    input.selectionEnd = input.value.length;
+    const event = new KeyboardEvent('keydown', { key: '3', cancelable: true });
+    Object.defineProperty(event, 'target', { value: input });
+
+    page().allowOnlyDigits(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('sanitizes non-digit input without truncating when no maximum length is given', () => {
+    const input = document.createElement('input');
+    input.value = '12a34-567';
+    const event = new Event('input');
+    Object.defineProperty(event, 'target', { value: input });
+
+    page().sanitizeDigits(event);
+
+    expect(input.value).toBe('1234567');
   });
 });

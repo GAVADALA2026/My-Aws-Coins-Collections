@@ -108,20 +108,20 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-NEW-01 | `NewCoin` | inizializza tutti i sei FormControl | positivo | NOT RUN |
-| TC-NEW-02 | `NewCoin` | nome vuoto è rifiutato e non invia action | negativo | NOT RUN |
-| TC-NEW-03 | `NewCoin` | country vuoto è rifiutato e non invia action | negativo | NOT RUN |
-| TC-NEW-04 | `NewCoin` | anno zero e negativo sono rifiutati | boundary | NOT RUN |
-| TC-NEW-05 | `NewCoin` | anno 1 è accettato | boundary | NOT RUN |
-| TC-NEW-06 | `NewCoin` | valori currency/estimated zero sono accettati | boundary | NOT RUN |
-| TC-NEW-07 | `NewCoin` | valori currency/estimated negativi sono rifiutati | boundary | NOT RUN |
-| TC-NEW-08 | `NewCoin` | descrizione opzionale vuota è accettata | positivo | NOT RUN |
-| TC-NEW-09 | `NewCoin` | submit valido dispatcha `addCoin` con tutti i campi | positivo | NOT RUN |
-| TC-NEW-10 | `NewCoin` | tasti di controllo consentiti non vengono bloccati | UI | NOT RUN |
-| TC-NEW-11 | `NewCoin` | lettere, segni e decimali in keydown vengono bloccati | UI/negativo | NOT RUN |
-| TC-NEW-12 | `NewCoin` | anno a quattro cifre blocca ulteriore digitazione senza selezione | boundary | NOT RUN |
-| TC-NEW-13 | `NewCoin` | selezione nel campo a lunghezza massima consente la sostituzione | boundary | NOT RUN |
-| TC-NEW-14 | `NewCoin` | input/paste elimina i non-digit e rispetta il max length | UI | NOT RUN |
+| TC-NEW-01 | `NewCoin` | inizializza tutti i sei FormControl | positivo | PASS |
+| TC-NEW-02 | `NewCoin` | nome vuoto è rifiutato e non invia action | negativo | PASS |
+| TC-NEW-03 | `NewCoin` | country vuoto è rifiutato e non invia action | negativo | PASS |
+| TC-NEW-04 | `NewCoin` | anno zero e negativo sono rifiutati | boundary | PASS |
+| TC-NEW-05 | `NewCoin` | anno 1 è accettato | boundary | PASS |
+| TC-NEW-06 | `NewCoin` | valori currency/estimated zero sono accettati | boundary | PASS |
+| TC-NEW-07 | `NewCoin` | valori currency/estimated negativi sono rifiutati | boundary | PASS |
+| TC-NEW-08 | `NewCoin` | descrizione opzionale vuota è accettata | positivo | PASS |
+| TC-NEW-09 | `NewCoin` | submit valido dispatcha `addCoin` con tutti i campi | positivo | PASS |
+| TC-NEW-10 | `NewCoin` | tasti di controllo consentiti non vengono bloccati | UI | PASS |
+| TC-NEW-11 | `NewCoin` | lettere, segni e decimali in keydown vengono bloccati | UI/negativo | PASS |
+| TC-NEW-12 | `NewCoin` | anno a quattro cifre blocca ulteriore digitazione senza selezione | boundary | PASS |
+| TC-NEW-13 | `NewCoin` | selezione nel campo a lunghezza massima consente la sostituzione | boundary | PASS |
+| TC-NEW-14 | `NewCoin` | input/paste elimina i non-digit e rispetta il max length | UI | PASS |
 
 ### Collezione e componenti di presentazione
 
@@ -169,7 +169,7 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 
 ## Stato di esecuzione verificato
 
-L'ultima esecuzione completa ha prodotto **18 suite PASS e 82 test PASS**.
+L'ultima esecuzione completa ha prodotto **18 suite PASS e 98 test PASS**.
 I file dei test implementati coprono azioni, modelli, reducer, pipe, servizio
 RxJS, effect NgRx, guard, routing e tutti i componenti esistenti.
 
@@ -182,8 +182,8 @@ Lines:      95.19% (673/707)
 Report HTML: coverage/lcov-report/index.html
 ```
 
-Aree intenzionalmente ancora nel backlog della seconda settimana: input monetari negativi,
-tutti i limiti di `NewCoin` e scenari Store→Effects→componenti completi. Questi non sono nascosti dalla coverage:
+Aree intenzionalmente ancora nel backlog della seconda settimana: scenari
+Store→Effects→componenti completi. Questi non sono nascosti dalla coverage:
 restano casi funzionali da portare a `PASS` durante i giorni 8–10.
 
 ## Quality gate e deliverable finali

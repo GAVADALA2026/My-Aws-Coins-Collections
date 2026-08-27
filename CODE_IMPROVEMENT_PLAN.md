@@ -6,6 +6,25 @@ Il repository dispone di una suite Jest stabile: 19 suite, 101 test e coverage
 al 100% su Statements, Branches, Functions e Lines. Il quality gate è eseguito
 localmente e in GitHub Actions; `npm audit` non riporta vulnerabilità.
 
+## Stato di avanzamento
+
+| Attività | Stato | PR | Note |
+|---|---|---|---|
+| P1-01 — ID stabile + rinomina `sellCoin` | ✅ Implementato | #16 | `id` su Coin, `sellCoin({coinId})`, track `coin.id` |
+| P1-02 — Reducer puro (no `alert`) | ✅ Implementato | #16 | rimosso side effect, aggiunta `sellCoinFailure` |
+| P2-02 — Importi decimali | ⬜ Da fare | — | — |
+| P2-03 — UX e accessibilità | ⬜ Da fare | — | — |
+| P3-01 — Selector + ViewModel | ⬜ Da fare | — | — |
+| P3-02 — Change detection | ⬜ Da fare | — | — |
+| P4-01 — E2E (Playwright) | ⬜ Da fare | — | — |
+| P4-02 — Branch protection | ⬜ Da fare | — | — |
+| P4-03 — Dependabot | ⬜ Da fare | — | — |
+| P2-01 — Repository dati | ⬜ Da fare | — | — |
+| P0-01 — Auth reale | ⬜ Da fare | — | rimandata (ultima) |
+
+Dopo P1: **103 test pass (19 suite), coverage 100%** su Statements, Branches,
+Functions e Lines. Lint 0, type-check 0, build ok.
+
 Questo piano riguarda l'evoluzione della qualità architetturale, funzionale,
 accessibile e operativa dell'applicazione. Ogni attività deve seguire il flusso
 branch dedicato → test → aggiornamento documentazione → Pull Request → CI verde

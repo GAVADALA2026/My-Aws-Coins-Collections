@@ -1,5 +1,5 @@
 import {
-  addCoin, getCoinsCollection, getCoinsCollectionFailure, getCoinsCollectionSuccess, seelCoin,
+  addCoin, getCoinsCollection, getCoinsCollectionFailure, getCoinsCollectionSuccess, sellCoin, sellCoinFailure,
 } from './coin.actions';
 import { Coin } from '../models/Coin';
 
@@ -10,8 +10,12 @@ describe('coin actions', () => {
     expect(addCoin({ coin })).toEqual({ type: addCoin.type, coin });
   });
 
-  it.each([0, 4, -1])('creates a sell action for index %i', (coinIdx) => {
-    expect(seelCoin({ coinIdx })).toEqual({ type: seelCoin.type, coinIdx });
+  it('creates a sell action for a coin id', () => {
+    expect(sellCoin({ coinId: 'abc' })).toEqual({ type: sellCoin.type, coinId: 'abc' });
+  });
+
+  it('creates a sell failure action with the error', () => {
+    expect(sellCoinFailure({ error: 'sell failed' })).toEqual({ type: sellCoinFailure.type, error: 'sell failed' });
   });
 
   it('creates a collection request without payload', () => {

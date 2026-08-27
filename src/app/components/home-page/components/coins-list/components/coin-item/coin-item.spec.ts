@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { seelCoin } from '../../../../../../actions/coin.actions';
+import { sellCoin } from '../../../../../../actions/coin.actions';
 import { Coin } from '../../../../../../models/Coin';
 import { CoinItem } from './coin-item';
 
@@ -37,10 +37,10 @@ describe('CoinItem', () => {
     expect(() => fixture.detectChanges()).toThrow('Add index as input parameter');
   });
 
-  it('dispatches the sale action for its index', async () => {
+  it('dispatches the sale action for its coin id', async () => {
     const { fixture, component, store } = await createFixture({ coin, index: 2 });
     fixture.detectChanges();
     component.sell();
-    expect(store.dispatch).toHaveBeenCalledWith(seelCoin({ coinIdx: 2 }));
+    expect(store.dispatch).toHaveBeenCalledWith(sellCoin({ coinId: coin.id }));
   });
 });

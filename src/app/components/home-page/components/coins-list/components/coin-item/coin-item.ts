@@ -5,7 +5,7 @@ import { Coin } from '../../../../../../models/Coin';
 import { CountryFlagPipe } from '../../../../../../pipes/country-flag-pipe';
 import { AppState } from '../../../../../../AppState';
 import { Store } from '@ngrx/store';
-import { seelCoin } from '../../../../../../actions/coin.actions';
+import { sellCoin } from '../../../../../../actions/coin.actions';
 
 @Component({
   selector: 'app-coin-item',
@@ -26,6 +26,6 @@ export class CoinItem implements OnInit {
   }
 
   sell(): void {
-    this.store.dispatch(seelCoin({ coinIdx: this.index }));
+    this.store.dispatch(sellCoin({ coinId: this.coin.id }));
   }
 }

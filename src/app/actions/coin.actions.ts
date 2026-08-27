@@ -1,9 +1,14 @@
 import { createAction, props } from '@ngrx/store';
 import { Coin } from '../models/Coin';
 
-export const seelCoin = createAction(
+export const sellCoin = createAction(
   '[Coin Component] find & sell a coin',
-  props<{ coinIdx: number }>(),
+  props<{ coinId: string }>(),
+);
+
+export const sellCoinFailure = createAction(
+  '[Coin Component] sell a coin failed',
+  props<{ error: string }>(),
 );
 
 export const addCoin = createAction(

@@ -3,11 +3,19 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AppState } from '../../../../AppState';
-import { Observable, of } from 'rxjs';
-import { Coin } from '../../../../models/Coin';
 import { CoinItem } from './components/coin-item/coin-item';
 import { getCoinsCollection } from '../../../../actions/coin.actions';
+import { selectCoinsViewModel } from '../../../../selectors/coin.selectors';
+
+export interface CoinsViewModel {
+  coins: import('../../../../models/Coin').Coin[];
+  loading: boolean;
+  error: string | null;
+  count: number;
+  totalEstimatedValue: number;
+}
 
 @Component({
   selector: 'app-coins-list',
@@ -17,14 +25,9 @@ import { getCoinsCollection } from '../../../../actions/coin.actions';
 })
 export class CoinsList implements OnInit {
   private store: Store<AppState> = inject(Store);
-  protected coinsCollection$: Observable<Coin[]> = of([]);
-  protected isLoading$: Observable<boolean> = of(false);
-  protected error$: Observable<string | null> = of(null);
+  protected viewModel$: Observable<CoinsViewModel> = this.store.select(selectCoinsViewModel);
 
   ngOnInit(): void {
-    this.coinsCollection$ = this.store.select((store) => store.coinCollection.coins);
-    this.isLoading$ = this.store.select((store) => store.coinCollection.loading);
-    this.error$ = this.store.select((store) => store.coinCollection.error);
     this.loadCoins();
   }
 

@@ -1,16 +1,16 @@
-@if (isLoading$ | async) {
-  <section class="spinner-wrapper py-12" aria-busy="true" role="status">
-    <mat-spinner diameter="48" />
-    <p class="mt-4 text-sm text-slate-500">Loading your coin collection…</p>
-  </section>
-} @else if (error$ | async; as error) {
-  <section class="feedback-wrapper py-12" role="alert" aria-live="assertive">
-    <p class="feedback-title">Unable to load your coin collection.</p>
-    <p class="feedback-message">{{ error }}</p>
-    <button mat-flat-button type="button" (click)="loadCoins()">Retry</button>
-  </section>
-} @else if (coinsCollection$ | async; as coinsCollection) {
-  @if (coinsCollection.length === 0) {
+@if (viewModel$ | async; as vm) {
+  @if (vm.loading) {
+    <section class="spinner-wrapper py-12" aria-busy="true" role="status">
+      <mat-spinner diameter="48" />
+      <p class="mt-4 text-sm text-slate-500">Loading your coin collection…</p>
+    </section>
+  } @else if (vm.error) {
+    <section class="feedback-wrapper py-12" role="alert" aria-live="assertive">
+      <p class="feedback-title">Unable to load your coin collection.</p>
+      <p class="feedback-message">{{ vm.error }}</p>
+      <button mat-flat-button type="button" (click)="loadCoins()">Retry</button>
+    </section>
+  } @else if (vm.coins.length === 0) {
     <section class="empty-wrapper py-16 text-center" role="status">
       <p class="text-lg font-semibold text-slate-700">Your collection is empty.</p>
       <p class="mt-2 text-sm text-slate-500">
@@ -21,7 +21,7 @@
     <section
       class="mx-auto grid max-w-6xl justify-items-center gap-6 py-8 sm:grid-cols-2 xl:grid-cols-3"
     >
-      @for (coin of coinsCollection; track coin.id) {
+      @for (coin of vm.coins; track coin.id) {
         <app-coin-item [coin]="coin" [index]="$index" />
       }
     </section>

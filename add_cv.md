@@ -6,17 +6,17 @@
 
 ## Versione per CV
 
-Ho progettato e completato il rafforzamento della qualità software di un'applicazione Angular con NgRx, trasformando una configurazione di test non allineata nell'adozione strutturata di Jest. Ho realizzato una suite di **103 test in 19 suite**, con copertura verificata al **100%** su Statements, Branches, Functions e Lines, introducendo quality gate locali e CI con soglie obbligatorie. Ho inoltre implementato workflow GitHub Actions, pubblicazione GitHub Pages, remediation controllata delle dipendenze npm da **29 vulnerabilità a zero**, e documentazione tecnica/tracciabilità completa tramite Issues, Pull Request, report e piano di test. Ho eseguito un refactoring NgRx di correttezza del dominio: identificatore stabile (`id`) per le coin, rinomina dell'azione di vendita (`sellCoin({coinId})`) e rimozione degli effetti collaterali dal reducer (niente `alert`), con feedback errori modellato via azione dedicata.
+Ho progettato e completato il rafforzamento della qualità software di un'applicazione Angular con NgRx, trasformando una configurazione di test non allineata nell'adozione strutturata di Jest. Ho realizzato una suite di **120 test in 19 suite**, con copertura verificata al **100%** su Statements, Branches, Functions e Lines, introducendo quality gate locali e CI con soglie obbligatorie. Ho inoltre implementato workflow GitHub Actions, pubblicazione GitHub Pages, remediation controllata delle dipendenze npm da **29 vulnerabilità a zero**, e documentazione tecnica/tracciabilità completa tramite Issues, Pull Request, report e piano di test. Ho eseguito un refactoring NgRx di correttezza del dominio: identificatore stabile (`id`) per le coin, rinomina dell'azione di vendita (`sellCoin({coinId})`) e rimozione degli effetti collaterali dal reducer (niente `alert`), con feedback errori modellato via azione dedicata. Ho inoltre migliorato UX e accessibilità: importi decimali nei campi monetari, empty state, attributi ARIA (aria-busy, role=alert), pulsante vendita descrittivo e conferma prima di un'azione distruttiva.
 
 ## Risultati misurabili
 
 - Migrazione e configurazione della test suite Angular su **Jest** con `jest-preset-angular` e ambiente zoneless.
-- Implementazione di **19 suite Jest** e **103 test PASS**, inclusi test unitari, regressione, boundary, error handling e integrazione Store → Effects → UI.
+- Implementazione di **19 suite Jest** e **120 test PASS**, inclusi test unitari, regressione, boundary, error handling e integrazione Store → Effects → UI.
 - Coverage finale verificata:
-  - Statements: **100%** (`723/723`)
-  - Branches: **100%** (`91/91`)
-  - Functions: **100%** (`28/28`)
-  - Lines: **100%** (`723/723`)
+  - Statements: **100%** (`772/772`)
+  - Branches: **100%** (`107/107`)
+  - Functions: **100%** (`30/30`)
+  - Lines: **100%** (`772/772`)
 - Definizione e verifica di quality gate Jest:
   - Statements e Lines ≥ **98%**
   - Branches e Functions ≥ **95%**

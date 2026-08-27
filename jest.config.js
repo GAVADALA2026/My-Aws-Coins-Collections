@@ -10,6 +10,8 @@ module.exports = {
     '!<rootDir>/src/**/*.spec.ts',
     // AppState contains only a TypeScript interface: no runtime business behaviour.
     '!<rootDir>/src/app/AppState.ts',
+    // CoinRepository is a TypeScript interface: no runtime business behaviour.
+    '!<rootDir>/src/app/repositories/coin.repository.ts',
   ],
   coverageThreshold: {
     global: {

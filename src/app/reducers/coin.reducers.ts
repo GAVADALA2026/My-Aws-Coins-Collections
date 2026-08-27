@@ -5,7 +5,8 @@ import {
   getCoinsCollection,
   getCoinsCollectionFailure,
   getCoinsCollectionSuccess,
-  seelCoin,
+  sellCoin,
+  sellCoinFailure,
 } from '../actions/coin.actions';
 
 export interface CoinState {
@@ -43,14 +44,20 @@ export const coinReducer = createReducer(
       error,
     };
   }),
-  on(seelCoin, (state, { coinIdx }) => {
-    if (coinIdx < 0 || coinIdx >= state.coins.length) {
-      alert('Coin not found');
+  on(sellCoin, (state, { coinId }) => {
+    const exists = state.coins.some((coin) => coin.id === coinId);
+    if (!exists) {
       return state;
     }
     return {
       ...state,
-      coins: state.coins.filter((_, index) => index !== coinIdx),
+      coins: state.coins.filter((coin) => coin.id !== coinId),
+    };
+  }),
+  on(sellCoinFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
     };
   }),
   on(addCoin, (state, { coin }) => {

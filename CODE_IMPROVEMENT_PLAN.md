@@ -17,13 +17,13 @@ localmente e in GitHub Actions; `npm audit` non riporta vulnerabilità.
 | P2-01 — Repository dati | ✅ Implementato | #25 | `CoinRepository`, `InMemoryCoinRepository`, dominio disaccoppiato |
 | P3-01 — Selector + ViewModel | ✅ Implementato | #29 | `createSelector`, `selectCoinsViewModel`, CoinsList usa il VM |
 | P3-02 — Change detection | ✅ Implementato | #30 | `OnPush` su CoinItem e CoinsList, track `coin.id` |
-| P4-01 — E2E (Playwright) | ⬜ Da fare | — | — |
-| P4-02 — Branch protection | ⬜ Da fare | — | — |
-| P4-03 — Dependabot | ⬜ Da fare | — | — |
+| P4-01 — E2E (Playwright) | ✅ Implementato | #35 | 3 test E2E, job CI, escluso da Jest |
+| P4-02 — Protezione `main` | ✅ Implementato (soft) | #37 | guardia no-direct-push; branch protection vera richiede admin |
+| P4-03 — Dependabot | ✅ Implementato | #35 | `dependabot.yml`, `npm audit` nel CI |
 | P0-01 — Auth reale | ⬜ Da fare | — | rimandata (ultima) |
 
-Dopo P1, P2 e P3: **129 test pass (21 suite), coverage 100%** su Statements,
-Branches, Functions e Lines. Lint 0, type-check 0, build ok.
+Dopo P1, P2, P3 e P4: **129 test pass (21 suite) + 3 test E2E, coverage 100%** su
+Statements, Branches, Functions e Lines. Lint 0, type-check 0, build ok.
 
 Questo piano riguarda l'evoluzione della qualità architetturale, funzionale,
 accessibile e operativa dell'applicazione. Ogni attività deve seguire il flusso

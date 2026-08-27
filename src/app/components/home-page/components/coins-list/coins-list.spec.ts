@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { AppState } from '../../../../AppState';
 import { Coin } from '../../../../models/Coin';
 import { getCoinsCollection } from '../../../../actions/coin.actions';
 import { CoinsList } from './coins-list';
@@ -12,10 +11,10 @@ interface CoinsListAccess { loadCoins(): void };
 describe('CoinsList', () => {
   const coin = new Coin('Euro', 'Commemorative', 'Italy', 2002, 2, 18);
 
-  const createFixture = async (state: AppState) => {
+  const createFixture = async (viewModel: unknown) => {
     const store = {
       dispatch: jest.fn(),
-      select: jest.fn((selector: (current: AppState) => unknown) => of(selector(state))),
+      select: jest.fn(() => of(viewModel)),
     };
     await TestBed.configureTestingModule({
       imports: [CoinsList],
@@ -26,11 +25,11 @@ describe('CoinsList', () => {
     return { fixture, component: fixture.componentInstance, store };
   };
 
-  it('selects each collection state field and dispatches initial loading', async () => {
+  it('selects the coins view model and dispatches initial loading', async () => {
     const { component, store } = await createFixture({
-      user: { username: '', pwd: '' }, coinCollection: { coins: [], loading: false, error: null },
+      coins: [], loading: false, error: null, count: 0, totalEstimatedValue: 0,
     });
-    expect(store.select).toHaveBeenCalledTimes(3);
+    expect(store.select).toHaveBeenCalledTimes(1);
     expect(store.dispatch).toHaveBeenCalledWith(getCoinsCollection());
     (component as unknown as CoinsListAccess).loadCoins();
     expect(store.dispatch).toHaveBeenCalledTimes(2);
@@ -38,7 +37,7 @@ describe('CoinsList', () => {
 
   it('renders a spinner while loading', async () => {
     const { fixture } = await createFixture({
-      user: { username: '', pwd: '' }, coinCollection: { coins: [], loading: true, error: null },
+      coins: [], loading: true, error: null, count: 0, totalEstimatedValue: 0,
     });
     expect(fixture.nativeElement.querySelector('mat-spinner')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('.feedback-wrapper')).toBeNull();
@@ -46,7 +45,7 @@ describe('CoinsList', () => {
 
   it('renders error feedback and retries loading on click', async () => {
     const { fixture, store } = await createFixture({
-      user: { username: '', pwd: '' }, coinCollection: { coins: [], loading: false, error: 'offline' },
+      coins: [], loading: false, error: 'offline', count: 0, totalEstimatedValue: 0,
     });
     expect(fixture.nativeElement.textContent).toContain('Unable to load your coin collection.');
     fixture.nativeElement.querySelector('button').click();
@@ -55,14 +54,14 @@ describe('CoinsList', () => {
 
   it('renders one coin item for every loaded coin', async () => {
     const { fixture } = await createFixture({
-      user: { username: '', pwd: '' }, coinCollection: { coins: [coin, coin], loading: false, error: null },
+      coins: [coin, coin], loading: false, error: null, count: 2, totalEstimatedValue: 36,
     });
     expect(fixture.nativeElement.querySelectorAll('app-coin-item')).toHaveLength(2);
   });
 
   it('renders an empty state when the collection has no coins', async () => {
     const { fixture } = await createFixture({
-      user: { username: '', pwd: '' }, coinCollection: { coins: [], loading: false, error: null },
+      coins: [], loading: false, error: null, count: 0, totalEstimatedValue: 0,
     });
     expect(fixture.nativeElement.textContent).toContain('Your collection is empty.');
     expect(fixture.nativeElement.querySelectorAll('app-coin-item')).toHaveLength(0);

@@ -6,12 +6,13 @@
 
 ## Versione per CV
 
-Ho progettato e completato il rafforzamento della qualità software di un'applicazione Angular con NgRx, trasformando una configurazione di test non allineata nell'adozione strutturata di Jest. Ho realizzato una suite di **129 test in 21 suite**, con copertura verificata al **100%** su Statements, Branches, Functions e Lines, introducendo quality gate locali e CI con soglie obbligatorie. Ho inoltre implementato workflow GitHub Actions, pubblicazione GitHub Pages, remediation controllata delle dipendenze npm da **29 vulnerabilità a zero**, e documentazione tecnica/tracciabilità completa tramite Issues, Pull Request, report e piano di test. Ho eseguito un refactoring NgRx di correttezza del dominio: identificatore stabile (`id`) per le coin, rinomina dell'azione di vendita (`sellCoin({coinId})`) e rimozione degli effetti collaterali dal reducer (niente `alert`), con feedback errori modellato via azione dedicata. Ho inoltre migliorato UX e accessibilità (importi decimali, empty state, attributi ARIA, conferma vendita), introdotto un pattern repository (`CoinRepository` + `InMemoryCoinRepository`) per disaccoppiare il dominio dall'accesso ai dati, e ottimizzato l'architettura NgRx con selector memoizzati (`createSelector`), ViewModel unico e `ChangeDetectionStrategy.OnPush` sui componenti presentazionali.
+Ho progettato e completato il rafforzamento della qualità software di un'applicazione Angular con NgRx, trasformando una configurazione di test non allineata nell'adozione strutturata di Jest. Ho realizzato una suite di **129 test in 21 suite**, con copertura verificata al **100%** su Statements, Branches, Functions e Lines, introducendo quality gate locali e CI con soglie obbligatorie. Ho inoltre implementato workflow GitHub Actions, pubblicazione GitHub Pages, remediation controllata delle dipendenze npm da **29 vulnerabilità a zero**, e documentazione tecnica/tracciabilità completa tramite Issues, Pull Request, report e piano di test. Ho eseguito un refactoring NgRx di correttezza del dominio: identificatore stabile (`id`) per le coin, rinomina dell'azione di vendita (`sellCoin({coinId})`) e rimozione degli effetti collaterali dal reducer (niente `alert`), con feedback errori modellato via azione dedicata. Ho inoltre migliorato UX e accessibilità (importi decimali, empty state, attributi ARIA, conferma vendita), introdotto un pattern repository (`CoinRepository` + `InMemoryCoinRepository`) per disaccoppiare il dominio dall'accesso ai dati, e ottimizzato l'architettura NgRx con selector memoizzati (`createSelector`), ViewModel unico e `ChangeDetectionStrategy.OnPush` sui componenti presentazionali. Ho inoltre introdotto **test end-to-end con Playwright** (login, caricamento collezione, vendita con conferma) integrato nel CI, automatizzato la manutenzione della supply chain con **Dependabot** e `npm audit` nel pipeline, e rafforzato la governance di `main` con una **guardia CI anti push diretto** che obbliga il flusso Pull Request → CI → merge.
 
 ## Risultati misurabili
 
 - Migrazione e configurazione della test suite Angular su **Jest** con `jest-preset-angular` e ambiente zoneless.
 - Implementazione di **21 suite Jest** e **129 test PASS**, inclusi test unitari, regressione, boundary, error handling e integrazione Store → Effects → UI.
+- Implementazione di **3 test end-to-end con Playwright** (login demo, caricamento collezione, vendita con conferma) e relativo job CI, con artifact del report.
 - Coverage finale verificata:
   - Statements: **100%** (`765/765`)
   - Branches: **100%** (`113/113`)
@@ -43,11 +44,14 @@ Ho progettato e completato il rafforzamento della qualità software di un'applic
 9. Implementazione di pipeline CI GitHub Actions con artifact coverage e runtime Node controllato tramite `.nvmrc`.
 10. Abilitazione e verifica della pubblicazione GitHub Pages.
 11. Analisi, aggiornamento e verifica delle dipendenze npm con audit a zero vulnerabilità.
-12. Archiviazione secondaria non distruttiva della memoria operativa su Wiki-LLM, con snapshot, hash di integrità e indicizzazione automatica.
+12. Configurazione di test end-to-end Playwright (login, caricamento, vendita) e del relativo job CI.
+13. Automazione supply chain con Dependabot e `npm audit --audit-level=high` nel pipeline.
+14. Guardia CI anti push diretto su `main` per imporre il flusso Pull Request → CI → merge.
+15. Archiviazione secondaria non distruttiva della memoria operativa su Wiki-LLM, con snapshot, hash di integrità e indicizzazione automatica.
 
 ## Tecnologie e competenze
 
-`Angular 21` · `TypeScript` · `Jest` · `jest-preset-angular` · `NgRx` · `RxJS` · `Node.js` · `npm` · `Git` · `GitHub` · `GitHub Actions` · `GitHub Pages` · `CI/CD` · `DevSecOps` · `npm audit` · `LCOV` · `ESLint` · `Quality Gates` · `Test Automation` · `Integration Testing`
+`Angular 21` · `TypeScript` · `Jest` · `jest-preset-angular` · `Playwright` · `NgRx` · `RxJS` · `Node.js` · `npm` · `Git` · `GitHub` · `GitHub Actions` · `GitHub Pages` · `Dependabot` · `CI/CD` · `DevSecOps` · `npm audit` · `LCOV` · `ESLint` · `Quality Gates` · `Test Automation` · `E2E Testing` · `Integration Testing`
 
 ## Evidenze pubbliche
 

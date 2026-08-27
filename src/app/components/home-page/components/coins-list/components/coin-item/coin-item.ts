@@ -26,6 +26,9 @@ export class CoinItem implements OnInit {
   }
 
   sell(): void {
-    this.store.dispatch(sellCoin({ coinId: this.coin.id }));
+    const confirmed = window.confirm(`Sell ${this.coin.name}?`);
+    if (confirmed) {
+      this.store.dispatch(sellCoin({ coinId: this.coin.id }));
+    }
   }
 }

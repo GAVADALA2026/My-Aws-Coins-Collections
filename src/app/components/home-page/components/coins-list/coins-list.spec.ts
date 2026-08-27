@@ -59,4 +59,12 @@ describe('CoinsList', () => {
     });
     expect(fixture.nativeElement.querySelectorAll('app-coin-item')).toHaveLength(2);
   });
+
+  it('renders an empty state when the collection has no coins', async () => {
+    const { fixture } = await createFixture({
+      user: { username: '', pwd: '' }, coinCollection: { coins: [], loading: false, error: null },
+    });
+    expect(fixture.nativeElement.textContent).toContain('Your collection is empty.');
+    expect(fixture.nativeElement.querySelectorAll('app-coin-item')).toHaveLength(0);
+  });
 });

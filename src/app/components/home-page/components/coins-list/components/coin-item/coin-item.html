@@ -45,7 +45,8 @@
     type="button"
     class="!mt-5 !h-11 !w-full !rounded-full !text-sm !font-semibold !tracking-[0.08em]"
     (click)="sell()"
+    [attr.aria-label]="'Sell ' + coin.name"
   >
-    Sell!
+    Sell {{ coin.name }}
   </button>
 </article>

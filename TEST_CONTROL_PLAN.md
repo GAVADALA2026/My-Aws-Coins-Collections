@@ -211,9 +211,25 @@ Statements al 101%: Jest è terminato con exit code `1` e il messaggio
 codice runtime. Il report HTML e `coverage/lcov.info` vengono rigenerati da
 ogni esecuzione positiva.
 
-I flussi integrati e le soglie Jest sono ora coperti. Il backlog residuo riguarda
-il quality gate GitHub Actions e la remediation controllata delle vulnerabilità
-transitive, attività tracciate separatamente nelle issue #6 e #7.
+## GitHub Actions quality gate — Issue #6
+
+Il workflow `.github/workflows/jest-quality-gate.yml` esegue il gate su push e
+pull request verso `main`, oltre che manualmente con `workflow_dispatch`. Usa
+Node 22, cache npm e dipendenze bloccate mediante `npm ci`; esegue in sequenza:
+
+1. `npm run lint`;
+2. `npm test`;
+3. `npm run test:coverage`, incluse le soglie Jest;
+4. `npm run build`.
+
+Qualunque comando non zero interrompe il job. L'azione carica sempre (`if: always()`)
+`coverage/lcov.info` e `coverage/lcov-report/` come artifact
+`jest-coverage-<run_number>`, conservato per 14 giorni. La prima esecuzione
+remota verificata è il [run #33070933196](https://github.com/GAVADALA2026/My-Aws-Coins-Collections/actions/runs/33070933196), concluso con successo.
+
+Le soglie Jest e il quality gate GitHub Actions sono ora coperti. Il backlog
+residuo riguarda la remediation controllata delle vulnerabilità transitive,
+attività tracciata separatamente nell'Issue #7.
 
 ## Quality gate e deliverable finali
 

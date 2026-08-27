@@ -152,6 +152,15 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 | TC-HOM-02 | `App` | crea il root component e conserva il titolo previsto | positivo | NOT RUN |
 | TC-HOM-03 | `App` | espone RouterOutlet per il routing applicativo | integrazione | NOT RUN |
 
+### Flussi integrati Store → Effects → UI
+
+| ID | File/area | Caso e risultato atteso | Tipo | Stato |
+|---|---|---|---|---|
+| TC-INT-01 | `appConfig` + `HomePage` | il TestBed usa la composizione reale di Store, Effects e reducer dichiarata in `appConfig`, sostituendo solo il confine esterno `CoinService` | integrazione/configurazione | PASS |
+| TC-INT-02 | `CoinsList` + `CoinEffects` | il caricamento iniziale attraversa action, reducer ed effect; la UI mostra prima lo spinner e poi una card per la coin ricevuta | integrazione/async | PASS |
+| TC-INT-03 | `CoinsList` + `CoinEffects` | un errore del servizio aggiorna lo stato failure e visualizza il feedback; Retry invia una nuova action che raggiunge il successo | integrazione/errore/retry | PASS |
+| TC-INT-04 | `NewCoin` → reducer → dashboard | il submit del form valido aggiorna Store reale, lista e riepilogo senza chiamate HTTP | integrazione | PASS |
+
 ## Piano di lavoro: 10 giorni lavorativi
 
 | Giorno | Attività e deliverable | Evidenza di uscita |
@@ -169,22 +178,24 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 
 ## Stato di esecuzione verificato
 
-L'ultima esecuzione completa ha prodotto **18 suite PASS e 98 test PASS**.
+L'ultima esecuzione completa ha prodotto **19 suite PASS e 101 test PASS**.
 I file dei test implementati coprono azioni, modelli, reducer, pipe, servizio
-RxJS, effect NgRx, guard, routing e tutti i componenti esistenti.
+RxJS, effect NgRx, guard, routing, tutti i componenti esistenti e i flussi
+integrati Store → Effects → UI.
 
 ```text
 npm run test:coverage
-Statements: 95.19% (673/707)
-Branches:   96.51% (83/86)
-Functions:  92.85% (26/28)
-Lines:      95.19% (673/707)
+Statements: 99.00% (700/707)
+Branches:   98.82% (84/85)
+Functions:  96.29% (26/27)
+Lines:      99.00% (700/707)
 Report HTML: coverage/lcov-report/index.html
 ```
 
-Aree intenzionalmente ancora nel backlog della seconda settimana: scenari
-Store→Effects→componenti completi. Questi non sono nascosti dalla coverage:
-restano casi funzionali da portare a `PASS` durante i giorni 8–10.
+I flussi integrati sono ora coperti da `TC-INT-01`–`TC-INT-04`. Il backlog
+residuo riguarda le soglie Jest, il quality gate GitHub Actions e la remediation
+controllata delle vulnerabilità transitive; sono attività tracciate separatamente
+nelle issue #5, #6 e #7.
 
 ## Quality gate e deliverable finali
 

@@ -115,6 +115,52 @@ export class NewCoin implements OnInit {
     }
   }
 
+  protected allowDecimalInput(event: KeyboardEvent, maxLength?: number): void {
+    if (this.allowedControlKeys.has(event.key)) {
+      return;
+    }
+
+    // allow digits and a single decimal separator ('.' or ',')
+    if (/^\d$/.test(event.key)) {
+      if (maxLength) {
+        const input = event.target as HTMLInputElement;
+        const hasSelection = input.selectionStart !== input.selectionEnd;
+        if (!hasSelection && input.value.length >= maxLength) {
+          event.preventDefault();
+        }
+      }
+      return;
+    }
+
+    if (event.key === '.' || event.key === ',') {
+      const input = event.target as HTMLInputElement;
+      if (input.value.includes('.') || input.value.includes(',')) {
+        event.preventDefault();
+      }
+      return;
+    }
+
+    event.preventDefault();
+  }
+
+  protected sanitizeDecimal(event: Event, maxLength?: number): void {
+    const input = event.target as HTMLInputElement;
+    // keep digits and a single decimal separator
+    const normalized = input.value.replace(',', '.');
+    const cleaned = normalized.replace(/[^\d.]/g, '');
+    const parts = cleaned.split('.');
+    let result = parts[0];
+    if (parts.length > 1) {
+      result += '.' + parts.slice(1).join('');
+    }
+    if (maxLength && result.length > maxLength) {
+      result = result.slice(0, maxLength);
+    }
+    if (input.value !== result) {
+      input.value = result;
+    }
+  }
+
   protected sanitizeDigits(event: Event, maxLength?: number): void {
     const input = event.target as HTMLInputElement;
     const digits = input.value.replace(/\D/g, '').slice(0, maxLength);

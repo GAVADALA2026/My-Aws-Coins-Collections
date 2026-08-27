@@ -16,6 +16,8 @@ interface NewCoinAccess {
   submit(): void;
   allowOnlyDigits(event: KeyboardEvent, maxLength?: number): void;
   sanitizeDigits(event: Event, maxLength?: number): void;
+  allowDecimalInput(event: KeyboardEvent, maxLength?: number): void;
+  sanitizeDecimal(event: Event, maxLength?: number): void;
 };
 
 describe('NewCoin', () => {
@@ -168,4 +170,101 @@ describe('NewCoin', () => {
 
     expect(input.value).toBe('1234567');
   });
+
+  it('allows a decimal separator in monetary input', () => {
+    const input = document.createElement('input');
+    input.value = '0';
+    input.selectionStart = 1;
+    input.selectionEnd = 1;
+    const event = new KeyboardEvent('keydown', { key: '.', cancelable: true });
+    Object.defineProperty(event, 'target', { value: input });
+
+    page().allowDecimalInput(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('blocks a second decimal separator in monetary input', () => {
+    const input = document.createElement('input');
+    input.value = '0.01';
+    input.selectionStart = 4;
+    input.selectionEnd = 4;
+    const event = new KeyboardEvent('keydown', { key: '.', cancelable: true });
+    Object.defineProperty(event, 'target', { value: input });
+
+    page().allowDecimalInput(event);
+
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('blocks non-digit, non-decimal keys in monetary input', () => {
+    const event = new KeyboardEvent('keydown', { key: 'a', cancelable: true });
+    page().allowDecimalInput(event);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('sanitizes pasted monetary input to a single decimal', () => {
+    const input = document.createElement('input');
+    input.value = '12a.34.56';
+    const event = new Event('input');
+    Object.defineProperty(event, 'target', { value: input });
+
+    page().sanitizeDecimal(event);
+
+    expect(input.value).toBe('12.3456');
+  });
+
+  it('accepts a decimal monetary value in the form', () => {
+    setValidValues();
+    page().currencyValueCtrl.setValue(0.01);
+    page().estimatedValueCtrl.setValue(0.5);
+    expect(page().group.valid).toBe(true);
+  });
+
+  it('blocks a digit beyond max length in decimal input unless selected', () => {
+    const input = document.createElement('input');
+    input.value = '12.34';
+    input.selectionStart = 5;
+    input.selectionEnd = 5;
+    const event = new KeyboardEvent('keydown', { key: '5', cancelable: true });
+    Object.defineProperty(event, 'target', { value: input });
+    page().allowDecimalInput(event, 5);
+    expect(event.defaultPrevented).toBe(true);
+
+    input.selectionStart = 0;
+    input.selectionEnd = 5;
+    const replacement = new KeyboardEvent('keydown', { key: '5', cancelable: true });
+    Object.defineProperty(replacement, 'target', { value: input });
+    page().allowDecimalInput(replacement, 5);
+    expect(replacement.defaultPrevented).toBe(false);
+  });
+
+  it('sanitizes decimal input with max length', () => {
+    const input = document.createElement('input');
+    input.value = '12.345678';
+    const event = new Event('input');
+    Object.defineProperty(event, 'target', { value: input });
+    page().sanitizeDecimal(event, 5);
+    expect(input.value).toBe('12.34');
+  });
+
+  it('allows digit input with no maximum length in decimal handler', () => {
+    const input = document.createElement('input');
+    input.value = '123456789';
+    input.selectionStart = input.value.length;
+    input.selectionEnd = input.value.length;
+    const event = new KeyboardEvent('keydown', { key: '3', cancelable: true });
+    Object.defineProperty(event, 'target', { value: input });
+    page().allowDecimalInput(event);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it.each(['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'])(
+    'allows control key %s in decimal handler',
+    (key) => {
+      const event = new KeyboardEvent('keydown', { key, cancelable: true });
+      page().allowDecimalInput(event);
+      expect(event.defaultPrevented).toBe(false);
+    },
+  );
 });

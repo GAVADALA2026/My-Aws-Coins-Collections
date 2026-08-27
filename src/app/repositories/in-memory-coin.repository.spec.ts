@@ -1,16 +1,11 @@
-import { TestBed } from '@angular/core/testing';
 import { Coin } from '../models/Coin';
-import { CoinService } from './coin-service';
-import { InMemoryCoinRepository } from '../repositories/in-memory-coin.repository';
+import { InMemoryCoinRepository } from './in-memory-coin.repository';
 
-describe('CoinService', () => {
-  let service: CoinService;
+describe('InMemoryCoinRepository', () => {
+  let repository: InMemoryCoinRepository;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [CoinService, InMemoryCoinRepository],
-    });
-    service = TestBed.inject(CoinService);
+    repository = new InMemoryCoinRepository();
     jest.useFakeTimers();
   });
 
@@ -18,7 +13,7 @@ describe('CoinService', () => {
 
   it('emits the initial collection after one second', () => {
     const received: Coin[][] = [];
-    service.getCoinCollection().subscribe((coins) => received.push(coins));
+    repository.getCoinCollection().subscribe((coins) => received.push(coins));
 
     jest.advanceTimersByTime(999);
     expect(received).toEqual([]);
@@ -30,7 +25,7 @@ describe('CoinService', () => {
 
   it('returns collection records with the expected essential fields', () => {
     let collection: Coin[] = [];
-    service.getCoinCollection().subscribe((coins) => (collection = coins));
+    repository.getCoinCollection().subscribe((coins) => (collection = coins));
     jest.advanceTimersByTime(1000);
 
     expect(collection[0]).toMatchObject({ name: '1 Euro Cent', country: 'Italy', year: 2002 });
@@ -40,7 +35,7 @@ describe('CoinService', () => {
   it('gives independent delayed emissions to multiple subscribers', () => {
     const first: Coin[][] = [];
     const second: Coin[][] = [];
-    const collection$ = service.getCoinCollection();
+    const collection$ = repository.getCoinCollection();
     collection$.subscribe((coins) => first.push(coins));
     collection$.subscribe((coins) => second.push(coins));
 

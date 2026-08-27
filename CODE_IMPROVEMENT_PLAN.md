@@ -14,15 +14,15 @@ localmente e in GitHub Actions; `npm audit` non riporta vulnerabilità.
 | P1-02 — Reducer puro (no `alert`) | ✅ Implementato | #16 | rimosso side effect, aggiunta `sellCoinFailure` |
 | P2-02 — Importi decimali | ✅ Implementato | #17 | `allowDecimalInput`, `inputmode=decimal`, `step=0.01` |
 | P2-03 — UX e accessibilità | ✅ Implementato | #22 | empty state, aria, conferma vendita, pulsante descrittivo |
+| P2-01 — Repository dati | ✅ Implementato | #25 | `CoinRepository`, `InMemoryCoinRepository`, dominio disaccoppiato |
 | P3-01 — Selector + ViewModel | ⬜ Da fare | — | — |
 | P3-02 — Change detection | ⬜ Da fare | — | — |
 | P4-01 — E2E (Playwright) | ⬜ Da fare | — | — |
 | P4-02 — Branch protection | ⬜ Da fare | — | — |
 | P4-03 — Dependabot | ⬜ Da fare | — | — |
-| P2-01 — Repository dati | ⬜ Da fare | — | — |
 | P0-01 — Auth reale | ⬜ Da fare | — | rimandata (ultima) |
 
-Dopo P1 e P2-02/P2-03: **120 test pass (19 suite), coverage 100%** su Statements,
+Dopo P1 e P2: **123 test pass (20 suite), coverage 100%** su Statements,
 Branches, Functions e Lines. Lint 0, type-check 0, build ok.
 
 Questo piano riguarda l'evoluzione della qualità architetturale, funzionale,

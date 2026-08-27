@@ -215,7 +215,8 @@ ogni esecuzione positiva.
 
 Il workflow `.github/workflows/jest-quality-gate.yml` esegue il gate su push e
 pull request verso `main`, oltre che manualmente con `workflow_dispatch`. Usa
-Node 22, cache npm e dipendenze bloccate mediante `npm ci`; esegue in sequenza:
+la versione Node dichiarata in `.nvmrc` (24.15.0), cache npm e dipendenze
+bloccate mediante `npm ci`; esegue in sequenza:
 
 1. `npm run lint`;
 2. `npm test`;
@@ -227,9 +228,21 @@ Qualunque comando non zero interrompe il job. L'azione carica sempre (`if: alway
 `jest-coverage-<run_number>`, conservato per 14 giorni. La prima esecuzione
 remota verificata è il [run #33070933196](https://github.com/GAVADALA2026/My-Aws-Coins-Collections/actions/runs/33070933196), concluso con successo.
 
-Le soglie Jest e il quality gate GitHub Actions sono ora coperti. Il backlog
-residuo riguarda la remediation controllata delle vulnerabilità transitive,
-attività tracciata separatamente nell'Issue #7.
+## Remediation dipendenze — Issue #7
+
+L'analisi iniziale di `npm audit --json` ha rilevato 29 vulnerabilità:
+3 low, 5 moderate, 20 high e 1 critical. La remediation è stata eseguita su
+branch dedicato, senza `--force` e senza `--legacy-peer-deps`:
+
+1. aggiornamento controllato delle dipendenze transitive consentite dal lockfile;
+2. aggiornamento coordinato di Angular e build toolchain alla linea 21.2.22;
+3. aggiornamento transitive finale di `esbuild` alla versione non vulnerabile;
+4. ricostruzione riproducibile con `npm ci` e nuova esecuzione di `npm audit`.
+
+L'evidenza finale è `npm audit: found 0 vulnerabilities`. Il controllo completo
+ha mantenuto 19 suite/101 test PASS e 100% su Statements, Branches, Functions e
+Lines. Le sole note residue di npm sono avvisi di deprecazione o script di
+installazione da revisionare: non sono finding di `npm audit`.
 
 ## Quality gate e deliverable finali
 
@@ -243,7 +256,10 @@ attività tracciata separatamente nell'Issue #7.
 
 - Il repository usa Angular 21 con setup zoneless: il bootstrap Jest deve restare zoneless, salvo introduzione esplicita di `zone.js` nel prodotto.
 - Il progetto mantiene `vitest` perché è incluso dal toolchain Angular; i comandi di verifica definiti qui usano esclusivamente Jest.
-- `npm install` ha segnalato 28 vulnerabilità transitive (3 low, 5 moderate, 19 high, 1 critical). La remediation richiede una verifica separata delle dipendenze e non verrà applicata automaticamente durante la migrazione test.
+- La remediation dell'Issue #7 ha portato `npm audit` a zero vulnerabilità. Restano
+  avvisi npm non classificati come finding (package deprecati e script di
+  installazione): vanno rivalutati quando si pianificano aggiornamenti major,
+  senza mascherarli come vulnerabilità di sicurezza.
 - TC-PIPE-01..10 ha già individuato e corretto il mapping errato `Germany → 🇬🇷`; il comportamento ora atteso è `Germany → 🇩🇪`.
 
 ## Fonte coverage

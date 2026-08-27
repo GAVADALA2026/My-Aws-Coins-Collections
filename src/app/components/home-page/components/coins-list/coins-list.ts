@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
@@ -22,6 +22,7 @@ export interface CoinsViewModel {
   imports: [CommonModule, CoinItem, MatProgressSpinnerModule, MatButtonModule],
   templateUrl: './coins-list.html',
   styleUrl: './coins-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoinsList implements OnInit {
   private store: Store<AppState> = inject(Store);

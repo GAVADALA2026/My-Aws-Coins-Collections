@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Coin } from '../../../../../../models/Coin';
 import { CountryFlagPipe } from '../../../../../../pipes/country-flag-pipe';
@@ -12,6 +12,7 @@ import { sellCoin } from '../../../../../../actions/coin.actions';
   imports: [CommonModule, MatButtonModule, CountryFlagPipe],
   templateUrl: './coin-item.html',
   styleUrl: './coin-item.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoinItem implements OnInit {
   private readonly store: Store<AppState> = inject(Store);

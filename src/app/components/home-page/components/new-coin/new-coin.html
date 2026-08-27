@@ -69,12 +69,13 @@
           <input
             matInput
             type="number"
-            inputmode="numeric"
+            inputmode="decimal"
+            step="0.01"
             [formControl]="currencyValueCtrl"
             placeholder="Face value"
-            (keydown)="allowOnlyDigits($event)"
-            (input)="sanitizeDigits($event)"
-            (paste)="sanitizeDigits($event)"
+            (keydown)="allowDecimalInput($event)"
+            (input)="sanitizeDecimal($event)"
+            (paste)="sanitizeDecimal($event)"
           />
           @if (currencyValueCtrl.hasError('required') && (currencyValueCtrl.dirty || currencyValueCtrl.touched)) {
             <mat-error>Currency value is required.</mat-error>
@@ -89,12 +90,13 @@
           <input
             matInput
             type="number"
-            inputmode="numeric"
+            inputmode="decimal"
+            step="0.01"
             [formControl]="estimatedValueCtrl"
             placeholder="Collector value"
-            (keydown)="allowOnlyDigits($event)"
-            (input)="sanitizeDigits($event)"
-            (paste)="sanitizeDigits($event)"
+            (keydown)="allowDecimalInput($event)"
+            (input)="sanitizeDecimal($event)"
+            (paste)="sanitizeDecimal($event)"
           />
           @if (estimatedValueCtrl.hasError('required') && (estimatedValueCtrl.dirty || estimatedValueCtrl.touched)) {
             <mat-error>Estimated value is required.</mat-error>

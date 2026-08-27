@@ -15,14 +15,14 @@ localmente e in GitHub Actions; `npm audit` non riporta vulnerabilità.
 | P2-02 — Importi decimali | ✅ Implementato | #17 | `allowDecimalInput`, `inputmode=decimal`, `step=0.01` |
 | P2-03 — UX e accessibilità | ✅ Implementato | #22 | empty state, aria, conferma vendita, pulsante descrittivo |
 | P2-01 — Repository dati | ✅ Implementato | #25 | `CoinRepository`, `InMemoryCoinRepository`, dominio disaccoppiato |
-| P3-01 — Selector + ViewModel | ⬜ Da fare | — | — |
-| P3-02 — Change detection | ⬜ Da fare | — | — |
+| P3-01 — Selector + ViewModel | ✅ Implementato | #29 | `createSelector`, `selectCoinsViewModel`, CoinsList usa il VM |
+| P3-02 — Change detection | ✅ Implementato | #30 | `OnPush` su CoinItem e CoinsList, track `coin.id` |
 | P4-01 — E2E (Playwright) | ⬜ Da fare | — | — |
 | P4-02 — Branch protection | ⬜ Da fare | — | — |
 | P4-03 — Dependabot | ⬜ Da fare | — | — |
 | P0-01 — Auth reale | ⬜ Da fare | — | rimandata (ultima) |
 
-Dopo P1 e P2: **123 test pass (20 suite), coverage 100%** su Statements,
+Dopo P1, P2 e P3: **129 test pass (21 suite), coverage 100%** su Statements,
 Branches, Functions e Lines. Lint 0, type-check 0, build ok.
 
 Questo piano riguarda l'evoluzione della qualità architetturale, funzionale,

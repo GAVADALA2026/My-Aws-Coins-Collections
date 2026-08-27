@@ -13,7 +13,7 @@ export class CountryFlagPipe implements PipeTransform {
       case 'France':
         return '🇫🇷';
       case 'Germany':
-        return '🇬🇷';
+        return '🇩🇪';
       case 'Portugal':
         return '🇵🇹';
       case 'Belgium':

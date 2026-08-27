@@ -1,22 +1,46 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { seelCoin } from '../../../../../../actions/coin.actions';
+import { Coin } from '../../../../../../models/Coin';
 import { CoinItem } from './coin-item';
 
 describe('CoinItem', () => {
-  let component: CoinItem;
-  let fixture: ComponentFixture<CoinItem>;
+  const coin = new Coin('Euro', 'Commemorative', 'Germany', 2002, 2, 18);
 
-  beforeEach(async () => {
+  const createFixture = async (inputs?: { coin?: Coin; index?: number | null }) => {
+    const store = { dispatch: jest.fn() };
     await TestBed.configureTestingModule({
       imports: [CoinItem],
+      providers: [provideNoopAnimations(), { provide: Store, useValue: store }],
     }).compileComponents();
+    const fixture = TestBed.createComponent(CoinItem);
+    if (inputs?.coin) fixture.componentRef.setInput('coin', inputs.coin);
+    if (inputs?.index !== undefined) fixture.componentRef.setInput('index', inputs.index);
+    return { fixture, component: fixture.componentInstance, store };
+  };
 
-    fixture = TestBed.createComponent(CoinItem);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+  it('renders the supplied coin and accepts index zero', async () => {
+    const { fixture } = await createFixture({ coin, index: 0 });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('h3')?.textContent).toContain('Euro');
+    expect(fixture.nativeElement.textContent).toContain('🇩🇪');
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('fails explicitly when coin input is missing', async () => {
+    const { fixture } = await createFixture({ index: 0 });
+    expect(() => fixture.detectChanges()).toThrow('Add coin as input parameter');
+  });
+
+  it.each([undefined, null])('fails explicitly when index is %p', async (index) => {
+    const { fixture } = await createFixture({ coin, index });
+    expect(() => fixture.detectChanges()).toThrow('Add index as input parameter');
+  });
+
+  it('dispatches the sale action for its index', async () => {
+    const { fixture, component, store } = await createFixture({ coin, index: 2 });
+    fixture.detectChanges();
+    component.sell();
+    expect(store.dispatch).toHaveBeenCalledWith(seelCoin({ coinIdx: 2 }));
   });
 });

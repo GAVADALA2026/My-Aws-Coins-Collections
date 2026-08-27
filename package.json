@@ -10,6 +10,7 @@
     "test": "jest --runInBand",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --runInBand",
+    "e2e": "playwright test",
     "lint": "eslint ."
   },
   "private": true,
@@ -35,6 +36,7 @@
     "@angular/cli": "^21.2.7",
     "@angular/compiler-cli": "^21.2.22",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/jest": "^30.0.0",
     "angular-eslint": "^21.3.1",

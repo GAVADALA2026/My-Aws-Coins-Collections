@@ -79,11 +79,11 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 | TC-SVC-02 | `CoinService` | emette dieci coin con campi essenziali valorizzati | integrità dati | NOT RUN |
 | TC-SVC-03 | `CoinService` | emissione non avviene prima di 1000 ms | boundary/tempo | NOT RUN |
 | TC-SVC-04 | `CoinService` | due sottoscrizioni ricevono una sequenza coerente e indipendente | async | NOT RUN |
-| TC-EFF-01 | `CoinEffects` | request + servizio riuscito produce `getCoinsCollectionSuccess` con payload | positivo | NOT RUN |
-| TC-EFF-02 | `CoinEffects` | `Error` del servizio produce failure con il messaggio originale | errore | NOT RUN |
-| TC-EFF-03 | `CoinEffects` | errore non-Error produce fallback `Unable to load coins collection` | errore | NOT RUN |
-| TC-EFF-04 | `CoinEffects` | azioni estranee non producono output | negativo | NOT RUN |
-| TC-EFF-05 | `CoinEffects` | una nuova request annulla la richiesta precedente (`switchMap`) | concorrenza | NOT RUN |
+| TC-EFF-01 | `CoinEffects` | request + servizio riuscito produce `getCoinsCollectionSuccess` con payload | positivo | PASS |
+| TC-EFF-02 | `CoinEffects` | `Error` del servizio produce failure con il messaggio originale | errore | PASS |
+| TC-EFF-03 | `CoinEffects` | errore non-Error produce fallback `Unable to load coins collection` | errore | PASS |
+| TC-EFF-04 | `CoinEffects` | azioni estranee non producono output | negativo | PASS |
+| TC-EFF-05 | `CoinEffects` | una nuova request annulla la richiesta precedente (`switchMap`) | concorrenza | PASS |
 | TC-GRD-01 | `authGuard` | username e password non vuoti consentono `/home` | positivo | NOT RUN |
 | TC-GRD-02 | `authGuard` | username vuoto restituisce UrlTree verso `/` | negativo | NOT RUN |
 | TC-GRD-03 | `authGuard` | password vuota restituisce UrlTree verso `/` | negativo | NOT RUN |
@@ -169,7 +169,7 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 
 ## Stato di esecuzione verificato
 
-L'ultima esecuzione completa ha prodotto **18 suite PASS e 79 test PASS**.
+L'ultima esecuzione completa ha prodotto **18 suite PASS e 81 test PASS**.
 I file dei test implementati coprono azioni, modelli, reducer, pipe, servizio
 RxJS, effect NgRx, guard, routing e tutti i componenti esistenti.
 
@@ -182,8 +182,7 @@ Lines:      95.19% (673/707)
 Report HTML: coverage/lcov-report/index.html
 ```
 
-Aree intenzionalmente ancora nel backlog della seconda settimana: test di
-cancellazione `switchMap`, azioni estranee negli effect, emissioni multiple del
+Aree intenzionalmente ancora nel backlog della seconda settimana: emissioni multiple del
 guard, input monetari negativi, tutti i limiti di `NewCoin` e scenari
 Store→Effects→componenti completi. Questi non sono nascosti dalla coverage:
 restano casi funzionali da portare a `PASS` durante i giorni 8–10.

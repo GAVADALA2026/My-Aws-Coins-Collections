@@ -32,53 +32,53 @@ Il report HTML richiesto è `coverage/lcov-report/index.html`.
 - Ogni test ha un nome che descrive il comportamento e non il dettaglio interno.
 - Bug corretti: prima test rosso che riproduce l'errore, quindi correzione minima e test verde.
 - I componenti isolano Store, Router, Actions e servizi tramite mock; la logica interna resta reale.
-- Non vengono introdotte soglie di coverage finché non esiste una baseline verde e attendibile. Alla fine della prima settimana vengono proposte soglie per le aree business; non si abbassano per far passare la CI.
-- I file generati, bootstrap e `main.ts` non sono considerati codice business ai fini delle decisioni sulla coverage.
+- Le soglie Jest si applicano alla suite completa: Statements e Lines ≥ 98%; Branches e Functions ≥ 95%. Il comando `npm run test:coverage` fallisce se una soglia è violata.
+- `AppState.ts` è escluso dal calcolo perché contiene esclusivamente un'interfaccia TypeScript, senza comportamento runtime o logica business. Le esclusioni aggiuntive richiedono la stessa motivazione documentata.
 
 ## Registro completo dei casi
 
-Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomici; i test parametrici Jest possono implementare più righe correlate, ma ogni riga conserva la propria evidenza nel risultato del test. La sezione **Stato di esecuzione verificato** registra la baseline effettiva e prevale sullo stato iniziale delle righe.
+Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rappresentano casi atomici e i test parametrici Jest possono implementare più righe correlate. Le modifiche future devono aggiornare ogni riga interessata soltanto dopo un'esecuzione reale a `PASS`, `FAIL` o `BLOCKED`, con relativa evidenza.
 
 ### Modelli e azioni
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-MOD-01 | `Coin` | costruttore completo conserva tutti i sei campi | positivo | NOT RUN |
-| TC-MOD-02 | `Coin` | costruttore senza argomenti inizializza stringhe vuote e valori numerici a zero | boundary | NOT RUN |
-| TC-MOD-03 | `Coin` | valori espliciti `0` per anno e valori monetari restano zero | boundary | NOT RUN |
-| TC-MOD-04 | `User` | costruttore completo conserva username e password | positivo | NOT RUN |
-| TC-MOD-05 | `User` | costruttore vuoto produce credenziali vuote | boundary | NOT RUN |
-| TC-ACT-01 | `signIn` | action contiene type, username e password invariati | positivo | NOT RUN |
-| TC-ACT-02 | `addCoin` | action contiene una coin invariata | positivo | NOT RUN |
-| TC-ACT-03 | `seelCoin` | action contiene l'indice da vendere | positivo | NOT RUN |
-| TC-ACT-04 | `getCoinsCollection*` | azioni richiesta/success/failure espongono type e payload corretti | positivo/errore | NOT RUN |
+| TC-MOD-01 | `Coin` | costruttore completo conserva tutti i sei campi | positivo | PASS |
+| TC-MOD-02 | `Coin` | costruttore senza argomenti inizializza stringhe vuote e valori numerici a zero | boundary | PASS |
+| TC-MOD-03 | `Coin` | valori espliciti `0` per anno e valori monetari restano zero | boundary | PASS |
+| TC-MOD-04 | `User` | costruttore completo conserva username e password | positivo | PASS |
+| TC-MOD-05 | `User` | costruttore vuoto produce credenziali vuote | boundary | PASS |
+| TC-ACT-01 | `signIn` | action contiene type, username e password invariati | positivo | PASS |
+| TC-ACT-02 | `addCoin` | action contiene una coin invariata | positivo | PASS |
+| TC-ACT-03 | `seelCoin` | action contiene l'indice da vendere | positivo | PASS |
+| TC-ACT-04 | `getCoinsCollection*` | azioni richiesta/success/failure espongono type e payload corretti | positivo/errore | PASS |
 
 ### Reducer NgRx
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-RED-01 | `loginReducer` | stato iniziale ha credenziali vuote | positivo | NOT RUN |
-| TC-RED-02 | `loginReducer` | `signIn` sostituisce le credenziali e non muta lo stato precedente | positivo | NOT RUN |
-| TC-RED-03 | `coinReducer` | stato iniziale è collezione vuota, non in caricamento e senza errore | positivo | NOT RUN |
-| TC-RED-04 | `coinReducer` | request pone `loading=true` e azzera un errore precedente | positivo | NOT RUN |
-| TC-RED-05 | `coinReducer` | success sostituisce coins, termina loading e azzera errore | positivo | NOT RUN |
-| TC-RED-06 | `coinReducer` | failure mantiene le coin, termina loading e salva il messaggio | errore | NOT RUN |
-| TC-RED-07 | `coinReducer` | vendita con indice valido elimina solo la coin richiesta e mantiene l'ordine | positivo | NOT RUN |
-| TC-RED-08 | `coinReducer` | vendita a indice 0 e ultimo indice gestisce entrambi i limiti | boundary | NOT RUN |
-| TC-RED-09 | `coinReducer` | indice negativo o >= lunghezza avvisa e restituisce lo stesso stato | negativo | NOT RUN |
-| TC-RED-10 | `coinReducer` | `addCoin` antepone la nuova coin senza alterare loading/errore | positivo | NOT RUN |
+| TC-RED-01 | `loginReducer` | stato iniziale ha credenziali vuote | positivo | PASS |
+| TC-RED-02 | `loginReducer` | `signIn` sostituisce le credenziali e non muta lo stato precedente | positivo | PASS |
+| TC-RED-03 | `coinReducer` | stato iniziale è collezione vuota, non in caricamento e senza errore | positivo | PASS |
+| TC-RED-04 | `coinReducer` | request pone `loading=true` e azzera un errore precedente | positivo | PASS |
+| TC-RED-05 | `coinReducer` | success sostituisce coins, termina loading e azzera errore | positivo | PASS |
+| TC-RED-06 | `coinReducer` | failure mantiene le coin, termina loading e salva il messaggio | errore | PASS |
+| TC-RED-07 | `coinReducer` | vendita con indice valido elimina solo la coin richiesta e mantiene l'ordine | positivo | PASS |
+| TC-RED-08 | `coinReducer` | vendita a indice 0 e ultimo indice gestisce entrambi i limiti | boundary | PASS |
+| TC-RED-09 | `coinReducer` | indice negativo o >= lunghezza avvisa e restituisce lo stesso stato | negativo | PASS |
+| TC-RED-10 | `coinReducer` | `addCoin` antepone la nuova coin senza alterare loading/errore | positivo | PASS |
 
 ### Pipe, servizio, effect e guard
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-PIPE-01..10 | `CountryFlagPipe` | mappa Italy, Spain, France, Germany, Portugal, Belgium, Netherlands, Austria, Greece e San Marino alla bandiera corretta | parametrico | 14 PASS (inclusi casi non mappati) |
+| TC-PIPE-01..10 | `CountryFlagPipe` | mappa Italy, Spain, France, Germany, Portugal, Belgium, Netherlands, Austria, Greece e San Marino alla bandiera corretta | parametrico | PASS |
 | TC-PIPE-11 | `CountryFlagPipe` | valore sconosciuto è restituito invariato | negativo | PASS |
 | TC-PIPE-12 | `CountryFlagPipe` | stringa vuota, casing diverso e spazi non vengono normalizzati implicitamente | boundary | PASS |
-| TC-SVC-01 | `CoinService` | emette la collezione iniziale completa dopo il delay previsto | positivo/async | NOT RUN |
-| TC-SVC-02 | `CoinService` | emette dieci coin con campi essenziali valorizzati | integrità dati | NOT RUN |
-| TC-SVC-03 | `CoinService` | emissione non avviene prima di 1000 ms | boundary/tempo | NOT RUN |
-| TC-SVC-04 | `CoinService` | due sottoscrizioni ricevono una sequenza coerente e indipendente | async | NOT RUN |
+| TC-SVC-01 | `CoinService` | emette la collezione iniziale completa dopo il delay previsto | positivo/async | PASS |
+| TC-SVC-02 | `CoinService` | emette dieci coin con campi essenziali valorizzati | integrità dati | PASS |
+| TC-SVC-03 | `CoinService` | emissione non avviene prima di 1000 ms | boundary/tempo | PASS |
+| TC-SVC-04 | `CoinService` | due sottoscrizioni ricevono una sequenza coerente e indipendente | async | PASS |
 | TC-EFF-01 | `CoinEffects` | request + servizio riuscito produce `getCoinsCollectionSuccess` con payload | positivo | PASS |
 | TC-EFF-02 | `CoinEffects` | `Error` del servizio produce failure con il messaggio originale | errore | PASS |
 | TC-EFF-03 | `CoinEffects` | errore non-Error produce fallback `Unable to load coins collection` | errore | PASS |
@@ -94,15 +94,15 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-LOG-01 | `LoginPage` | crea form con username e password e submit inizialmente disabilitato | positivo | NOT RUN |
-| TC-LOG-02 | `LoginPage` | username vuoto produce validazione e non esegue dispatch/navigate | negativo | NOT RUN |
-| TC-LOG-03 | `LoginPage` | password assente produce validazione e non esegue dispatch/navigate | negativo | NOT RUN |
-| TC-LOG-04 | `LoginPage` | password di 7 caratteri è rifiutata | boundary | NOT RUN |
-| TC-LOG-05 | `LoginPage` | password di 8 caratteri e username valido abilitano submit | boundary | NOT RUN |
-| TC-LOG-06 | `LoginPage` | submit valido invia `signIn` con valori immutati | positivo | NOT RUN |
-| TC-LOG-07 | `LoginPage` | submit valido naviga esattamente a `/home` | integrazione | NOT RUN |
-| TC-LOG-08 | route | route vuota visualizza LoginPage | integrazione | NOT RUN |
-| TC-LOG-09 | route | route `/home` è associata ad HomePage e protetta da `authGuard` | integrazione | NOT RUN |
+| TC-LOG-01 | `LoginPage` | crea form con username e password e submit inizialmente disabilitato | positivo | PASS |
+| TC-LOG-02 | `LoginPage` | username vuoto produce validazione e non esegue dispatch/navigate | negativo | PASS |
+| TC-LOG-03 | `LoginPage` | password assente produce validazione e non esegue dispatch/navigate | negativo | PASS |
+| TC-LOG-04 | `LoginPage` | password di 7 caratteri è rifiutata | boundary | PASS |
+| TC-LOG-05 | `LoginPage` | password di 8 caratteri e username valido abilitano submit | boundary | PASS |
+| TC-LOG-06 | `LoginPage` | submit valido invia `signIn` con valori immutati | positivo | PASS |
+| TC-LOG-07 | `LoginPage` | submit valido naviga esattamente a `/home` | integrazione | PASS |
+| TC-LOG-08 | route | route vuota visualizza LoginPage | integrazione | PASS |
+| TC-LOG-09 | route | route `/home` è associata ad HomePage e protetta da `authGuard` | integrazione | PASS |
 
 ### Creazione di una coin
 
@@ -127,30 +127,30 @@ Stato iniziale: `NOT RUN` salvo dove indicato. I codici rappresentano casi atomi
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-LST-01 | `CoinsList` | `ngOnInit` seleziona coins, loading ed error dallo Store | positivo | NOT RUN |
-| TC-LST-02 | `CoinsList` | `ngOnInit` dispatcha il caricamento una volta | positivo | NOT RUN |
-| TC-LST-03 | `CoinsList` | `loadCoins()` dispatcha `getCoinsCollection` | positivo | NOT RUN |
-| TC-LST-04 | template list | con loading mostra spinner e non lista/errore | UI/stato | NOT RUN |
-| TC-LST-05 | template list | con errore mostra messaggio e Retry | UI/errore | NOT RUN |
-| TC-LST-06 | template list | Retry invoca un nuovo caricamento | UI/errore | NOT RUN |
-| TC-LST-07 | template list | con coin renderizza un `app-coin-item` per elemento e indice corretto | UI | NOT RUN |
-| TC-ITM-01 | `CoinItem` | input coin e index validi consentono inizializzazione/rendering | positivo | NOT RUN |
-| TC-ITM-02 | `CoinItem` | coin assente genera errore esplicito | negativo | NOT RUN |
-| TC-ITM-03 | `CoinItem` | index `undefined` o `null` genera errore esplicito | negativo | NOT RUN |
-| TC-ITM-04 | `CoinItem` | index 0 è valido e non viene scambiato per assenza | boundary | NOT RUN |
-| TC-ITM-05 | `CoinItem` | click Sell dispatcha `seelCoin` con l'indice corrente | UI | NOT RUN |
-| TC-ITM-06 | template item | mostra flag, nome, anno, descrizione e valori EUR della coin | UI | NOT RUN |
-| TC-WEL-01 | `Welcome` | seleziona username dallo Store | positivo | NOT RUN |
-| TC-WEL-02 | template welcome | username non vuoto è mostrato | UI | NOT RUN |
-| TC-WEL-03 | template welcome | username vuoto visualizza fallback `User` | boundary | NOT RUN |
-| TC-RES-01 | `ResumeCoinsCollection` | `ngOnInit` seleziona la collezione | positivo | NOT RUN |
-| TC-RES-02 | `ResumeCoinsCollection` | collezione vuota produce numero 0 e valore 0 | boundary | NOT RUN |
-| TC-RES-03 | `ResumeCoinsCollection` | una coin produce count e estimatedValue corretti | positivo | NOT RUN |
-| TC-RES-04 | `ResumeCoinsCollection` | più coin sommano correttamente valori decimali | positivo/boundary | NOT RUN |
-| TC-RES-05 | template resume | formatta totale EUR e numero coin | UI | NOT RUN |
-| TC-HOM-01 | `HomePage` | compone Welcome, NewCoin e CoinsList | integrazione | NOT RUN |
-| TC-HOM-02 | `App` | crea il root component e conserva il titolo previsto | positivo | NOT RUN |
-| TC-HOM-03 | `App` | espone RouterOutlet per il routing applicativo | integrazione | NOT RUN |
+| TC-LST-01 | `CoinsList` | `ngOnInit` seleziona coins, loading ed error dallo Store | positivo | PASS |
+| TC-LST-02 | `CoinsList` | `ngOnInit` dispatcha il caricamento una volta | positivo | PASS |
+| TC-LST-03 | `CoinsList` | `loadCoins()` dispatcha `getCoinsCollection` | positivo | PASS |
+| TC-LST-04 | template list | con loading mostra spinner e non lista/errore | UI/stato | PASS |
+| TC-LST-05 | template list | con errore mostra messaggio e Retry | UI/errore | PASS |
+| TC-LST-06 | template list | Retry invoca un nuovo caricamento | UI/errore | PASS |
+| TC-LST-07 | template list | con coin renderizza un `app-coin-item` per elemento e indice corretto | UI | PASS |
+| TC-ITM-01 | `CoinItem` | input coin e index validi consentono inizializzazione/rendering | positivo | PASS |
+| TC-ITM-02 | `CoinItem` | coin assente genera errore esplicito | negativo | PASS |
+| TC-ITM-03 | `CoinItem` | index `undefined` o `null` genera errore esplicito | negativo | PASS |
+| TC-ITM-04 | `CoinItem` | index 0 è valido e non viene scambiato per assenza | boundary | PASS |
+| TC-ITM-05 | `CoinItem` | click Sell dispatcha `seelCoin` con l'indice corrente | UI | PASS |
+| TC-ITM-06 | template item | mostra flag, nome, anno, descrizione e valori EUR della coin | UI | PASS |
+| TC-WEL-01 | `Welcome` | seleziona username dallo Store | positivo | PASS |
+| TC-WEL-02 | template welcome | username non vuoto è mostrato | UI | PASS |
+| TC-WEL-03 | template welcome | username vuoto visualizza fallback `User` | boundary | PASS |
+| TC-RES-01 | `ResumeCoinsCollection` | `ngOnInit` seleziona la collezione | positivo | PASS |
+| TC-RES-02 | `ResumeCoinsCollection` | collezione vuota produce numero 0 e valore 0 | boundary | PASS |
+| TC-RES-03 | `ResumeCoinsCollection` | una coin produce count e estimatedValue corretti | positivo | PASS |
+| TC-RES-04 | `ResumeCoinsCollection` | più coin sommano correttamente valori decimali | positivo/boundary | PASS |
+| TC-RES-05 | template resume | formatta totale EUR e numero coin | UI | PASS |
+| TC-HOM-01 | `HomePage` | compone Welcome, NewCoin e CoinsList | integrazione | PASS |
+| TC-HOM-02 | `App` | crea il root component e conserva il titolo previsto | positivo | PASS |
+| TC-HOM-03 | `App` | espone RouterOutlet per il routing applicativo | integrazione | PASS |
 
 ### Flussi integrati Store → Effects → UI
 
@@ -185,17 +185,35 @@ integrati Store → Effects → UI.
 
 ```text
 npm run test:coverage
-Statements: 99.00% (700/707)
-Branches:   98.82% (84/85)
-Functions:  96.29% (26/27)
-Lines:      99.00% (700/707)
+Statements: 100.00% (700/700)
+Branches:   100.00% (84/84)
+Functions:  100.00% (26/26)
+Lines:      100.00% (700/700)
 Report HTML: coverage/lcov-report/index.html
 ```
 
-I flussi integrati sono ora coperti da `TC-INT-01`–`TC-INT-04`. Il backlog
-residuo riguarda le soglie Jest, il quality gate GitHub Actions e la remediation
-controllata delle vulnerabilità transitive; sono attività tracciate separatamente
-nelle issue #5, #6 e #7.
+## Quality gate Jest — Issue #5
+
+`jest.config.js` applica `coverageThreshold.global` a ogni esecuzione di
+`npm run test:coverage`:
+
+| Metrica | Soglia minima | Baseline verificata |
+|---|---:|---:|
+| Statements | 98% | 100.00% |
+| Branches | 95% | 100.00% |
+| Functions | 95% | 100.00% |
+| Lines | 98% | 100.00% |
+
+Il gate è stato validato anche in negativo con una soglia temporanea di
+Statements al 101%: Jest è terminato con exit code `1` e il messaggio
+`Coverage for statements (100%) does not meet "global" threshold (101%)`.
+`AppState.ts` è escluso perché espone solo un'interfaccia TypeScript, senza
+codice runtime. Il report HTML e `coverage/lcov.info` vengono rigenerati da
+ogni esecuzione positiva.
+
+I flussi integrati e le soglie Jest sono ora coperti. Il backlog residuo riguarda
+il quality gate GitHub Actions e la remediation controllata delle vulnerabilità
+transitive, attività tracciate separatamente nelle issue #6 e #7.
 
 ## Quality gate e deliverable finali
 
@@ -203,7 +221,7 @@ nelle issue #5, #6 e #7.
 2. Tutti i casi nel registro con esito aggiornato, oppure `BLOCKED` con dipendenza e owner.
 3. Report HTML: `coverage/lcov-report/index.html`; file lcov e JSON per integrazione CI.
 4. Riepilogo finale con conteggio test, tempi, Statements/Branches/Functions/Lines, rami residui e difetti.
-5. Nessuna soglia artificiale: la decisione sulle soglie avviene dopo la baseline completa e si concentra soprattutto su rami e reducer/effects/guard.
+5. `coverageThreshold.global` applica il gate: Statements/Lines ≥ 98%, Branches/Functions ≥ 95%. Una regressione sotto soglia interrompe Jest con exit code non zero.
 
 ## Rischi e decisioni aperte
 

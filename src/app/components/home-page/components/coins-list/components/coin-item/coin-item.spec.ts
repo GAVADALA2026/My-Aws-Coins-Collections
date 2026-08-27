@@ -40,7 +40,16 @@ describe('CoinItem', () => {
   it('dispatches the sale action for its coin id', async () => {
     const { fixture, component, store } = await createFixture({ coin, index: 2 });
     fixture.detectChanges();
+    jest.spyOn(window, 'confirm').mockReturnValue(true);
     component.sell();
     expect(store.dispatch).toHaveBeenCalledWith(sellCoin({ coinId: coin.id }));
+  });
+
+  it('does not dispatch the sale action when the user cancels', async () => {
+    const { fixture, component, store } = await createFixture({ coin, index: 2 });
+    fixture.detectChanges();
+    jest.spyOn(window, 'confirm').mockReturnValue(false);
+    component.sell();
+    expect(store.dispatch).not.toHaveBeenCalled();
   });
 });

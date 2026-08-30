@@ -6,7 +6,7 @@
 
 **Ambito:** codice Angular 21, NgRx, RxJS e template del repository. Il piano non dichiara requisiti che non sono presenti nel codice; i casi di sicurezza, accessibilità e browser reali sono registrati come controlli complementari, non come sostituti dei test Jest.
 
-**Criterio di chiusura:** `npm test`, `npm run test:coverage`, lint e build completano con esito positivo; `coverage/lcov-report/index.html` viene rigenerato; ogni caso ha esito `PASS`, `FAIL`, `BLOCKED` o motivazione di esclusione.
+**Criterio di chiusura:** `npm test`, `npm run test:coverage`, lint, build ed E2E completano con esito positivo; `coverage/lcov-report/index.html` viene rigenerato; ogni caso ha esito `PASS`, `FAIL`, `BLOCKED` o motivazione di esclusione.
 
 ## Toolchain Jest installata
 
@@ -22,6 +22,7 @@ Comandi ufficiali del clone:
 npm test                         # suite seriale, senza watch
 npm run test:watch               # sviluppo locale interattivo
 npm run test:coverage            # report testo + HTML + lcov + JSON
+npm run e2e                       # flussi Chromium con Playwright
 ```
 
 Configurazione: `jest.config.js`; bootstrap: `setup-jest.ts`.
@@ -50,8 +51,9 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 | TC-MOD-05 | `User` | costruttore vuoto produce credenziali vuote | boundary | PASS |
 | TC-ACT-01 | `signIn` | action contiene type, username e password invariati | positivo | PASS |
 | TC-ACT-02 | `addCoin` | action contiene una coin invariata | positivo | PASS |
-| TC-ACT-03 | `seelCoin` | action contiene l'indice da vendere | positivo | PASS |
-| TC-ACT-04 | `getCoinsCollection*` | azioni richiesta/success/failure espongono type e payload corretti | positivo/errore | PASS |
+| TC-ACT-03 | `sellCoin` | action contiene il `coinId` da vendere | positivo | PASS |
+| TC-ACT-04 | `sellCoinFailure` | action espone il messaggio d'errore | errore | PASS |
+| TC-ACT-05 | `getCoinsCollection*` | azioni richiesta/success/failure espongono type e payload correnti (`coinsCollections`/`error`) | positivo/errore | PASS |
 
 ### Reducer NgRx
 
@@ -63,22 +65,25 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 | TC-RED-04 | `coinReducer` | request pone `loading=true` e azzera un errore precedente | positivo | PASS |
 | TC-RED-05 | `coinReducer` | success sostituisce coins, termina loading e azzera errore | positivo | PASS |
 | TC-RED-06 | `coinReducer` | failure mantiene le coin, termina loading e salva il messaggio | errore | PASS |
-| TC-RED-07 | `coinReducer` | vendita con indice valido elimina solo la coin richiesta e mantiene l'ordine | positivo | PASS |
-| TC-RED-08 | `coinReducer` | vendita a indice 0 e ultimo indice gestisce entrambi i limiti | boundary | PASS |
-| TC-RED-09 | `coinReducer` | indice negativo o >= lunghezza avvisa e restituisce lo stesso stato | negativo | PASS |
+| TC-RED-07 | `coinReducer` | vendita con `coinId` valido elimina solo la coin richiesta e mantiene l'ordine | positivo | PASS |
+| TC-RED-08 | `coinReducer` | vendita della prima o dell'ultima coin per `coinId` gestisce entrambi i limiti | boundary | PASS |
+| TC-RED-09 | `coinReducer` | `coinId` sconosciuto restituisce lo stesso stato senza side effect | negativo | PASS |
 | TC-RED-10 | `coinReducer` | `addCoin` antepone la nuova coin senza alterare loading/errore | positivo | PASS |
 
-### Pipe, servizio, effect e guard
+### Pipe, repository/servizio, selector, effect e guard
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
 | TC-PIPE-01..10 | `CountryFlagPipe` | mappa Italy, Spain, France, Germany, Portugal, Belgium, Netherlands, Austria, Greece e San Marino alla bandiera corretta | parametrico | PASS |
 | TC-PIPE-11 | `CountryFlagPipe` | valore sconosciuto è restituito invariato | negativo | PASS |
 | TC-PIPE-12 | `CountryFlagPipe` | stringa vuota, casing diverso e spazi non vengono normalizzati implicitamente | boundary | PASS |
-| TC-SVC-01 | `CoinService` | emette la collezione iniziale completa dopo il delay previsto | positivo/async | PASS |
-| TC-SVC-02 | `CoinService` | emette dieci coin con campi essenziali valorizzati | integrità dati | PASS |
-| TC-SVC-03 | `CoinService` | emissione non avviene prima di 1000 ms | boundary/tempo | PASS |
-| TC-SVC-04 | `CoinService` | due sottoscrizioni ricevono una sequenza coerente e indipendente | async | PASS |
+| TC-REP-01 | `InMemoryCoinRepository` | emette la collezione iniziale completa dopo il delay previsto | positivo/async | PASS |
+| TC-REP-02 | `InMemoryCoinRepository` | emette dieci coin con campi essenziali valorizzati | integrità dati | PASS |
+| TC-REP-03 | `InMemoryCoinRepository` | emissione non avviene prima di 1000 ms | boundary/tempo | PASS |
+| TC-REP-04 | `InMemoryCoinRepository` | due sottoscrizioni ricevono una sequenza coerente e indipendente | async | PASS |
+| TC-SEL-01 | selector coin | espone coin, loading ed errore dallo stato | positivo | PASS |
+| TC-SEL-02 | selector coin | calcola count e valore stimato totale | positivo | PASS |
+| TC-SEL-03 | `selectCoinsViewModel` | compone coin, loading, errore, count e totale | integrazione | PASS |
 | TC-EFF-01 | `CoinEffects` | request + servizio riuscito produce `getCoinsCollectionSuccess` con payload | positivo | PASS |
 | TC-EFF-02 | `CoinEffects` | `Error` del servizio produce failure con il messaggio originale | errore | PASS |
 | TC-EFF-03 | `CoinEffects` | errore non-Error produce fallback `Unable to load coins collection` | errore | PASS |
@@ -178,19 +183,22 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 
 ## Stato di esecuzione verificato
 
-L'ultima esecuzione completa ha prodotto **19 suite PASS e 101 test PASS**.
+L'ultima esecuzione completa ha prodotto **21 suite PASS e 129 test PASS**.
 I file dei test implementati coprono azioni, modelli, reducer, pipe, servizio
 RxJS, effect NgRx, guard, routing, tutti i componenti esistenti e i flussi
 integrati Store → Effects → UI.
 
 ```text
 npm run test:coverage
-Statements: 100.00% (700/700)
-Branches:   100.00% (84/84)
-Functions:  100.00% (26/26)
-Lines:      100.00% (700/700)
+Statements: 100.00% (765/765)
+Branches:   100.00% (112/112)
+Functions:  100.00% (31/31)
+Lines:      100.00% (765/765)
 Report HTML: coverage/lcov-report/index.html
 ```
+
+L'esecuzione `npm run e2e` ha inoltre prodotto **3 test Playwright PASS** su
+Chromium: login, caricamento della collezione e vendita dopo conferma.
 
 ## Quality gate Jest — Issue #5
 
@@ -240,7 +248,7 @@ branch dedicato, senza `--force` e senza `--legacy-peer-deps`:
 4. ricostruzione riproducibile con `npm ci` e nuova esecuzione di `npm audit`.
 
 L'evidenza finale è `npm audit: found 0 vulnerabilities`. Il controllo completo
-ha mantenuto 19 suite/101 test PASS e 100% su Statements, Branches, Functions e
+ha mantenuto 21 suite/129 test PASS e 100% su Statements, Branches, Functions e
 Lines. Le sole note residue di npm sono avvisi di deprecazione o script di
 installazione da revisionare: non sono finding di `npm audit`.
 
@@ -260,6 +268,11 @@ installazione da revisionare: non sono finding di `npm audit`.
   avvisi npm non classificati come finding (package deprecati e script di
   installazione): vanno rivalutati quando si pianificano aggiornamenti major,
   senza mascherarli come vulnerabilità di sicurezza.
+- La revisione del 2026-08-30 non ha trovato vulnerabilità né aggiornamenti
+  compatibili da applicare. `@angular/animations` richiede una migrazione
+  applicativa a `animate.enter`/`animate.leave`; `glob` e `inflight` sono
+  deprecazioni transitive del toolchain Jest. Tutti restano rimandati per non
+  introdurre una major o una migrazione fuori ambito.
 - TC-PIPE-01..10 ha già individuato e corretto il mapping errato `Germany → 🇬🇷`; il comportamento ora atteso è `Germany → 🇩🇪`.
 
 ## Fonte coverage

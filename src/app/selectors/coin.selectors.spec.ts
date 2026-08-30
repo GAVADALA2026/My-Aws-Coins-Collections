@@ -12,7 +12,6 @@ describe('coin selectors', () => {
   const coinA = new Coin('A', '', 'Italy', 2002, 1, 2);
   const coinB = new Coin('B', '', 'France', 2003, 2, 3);
   const state = {
-    user: { username: '', pwd: '' },
     coinCollection: { coins: [coinA, coinB], loading: true, error: 'offline' },
   };
 

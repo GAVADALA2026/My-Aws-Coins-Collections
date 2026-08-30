@@ -1,5 +1,4 @@
 import { Coin } from './Coin';
-import { User } from './User';
 
 describe('domain models', () => {
   it('creates a Coin preserving every supplied field', () => {
@@ -55,13 +54,5 @@ describe('domain models', () => {
     expect(coin.year).toBe(0);
     expect(coin.currencyValue).toBe(0);
     expect(coin.estimatedValue).toBe(0);
-  });
-
-  it('creates a User preserving supplied credentials', () => {
-    expect(new User('gabriele', 'password')).toEqual({ username: 'gabriele', pwd: 'password' });
-  });
-
-  it('creates a User with empty credentials by default', () => {
-    expect(new User()).toEqual({ username: '', pwd: '' });
   });
 });

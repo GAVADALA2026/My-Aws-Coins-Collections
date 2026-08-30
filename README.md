@@ -1,10 +1,16 @@
 # MyAwsCoinsCollection
 
-MyAwsCoinsCollection is a teaching app created for the seminar of the `Web Technologies` course at the Università degli Studi di Salerno.
+MyAwsCoinsCollection is a public teaching demo created for the seminar of the `Web Technologies` course at the Università degli Studi di Salerno.
 
-The application is a small Angular project focused on a coin collection experience with a fake login flow used only for demo purposes.
+The application has no authentication flow and does not collect, retain, or validate user credentials. It opens directly to the sample coin collection.
 
-> Note: the login is not real. You can enter any username and any password to access the app.
+> This GitHub Pages deployment is public and must not be used for private data or access control.
+
+## Authentication boundary
+
+The prior client-only demo sign-in, credential Store state, and string-based route guard were removed. Authentication has deliberately not been replaced with an invented backend or identity-provider configuration.
+
+Before the application manages protected data, integrate a selected OpenID Connect/OAuth 2.0 provider or backend. The integration needs the provider/tenant, client ID, redirect and logout callback URLs, permitted origins, and a server-side session strategy (for example, `HttpOnly`, `Secure`, appropriately `SameSite` cookies). Keep passwords, access tokens, refresh tokens, and client secrets out of source code, browser storage, and NgRx state. Protected routes must then validate the real server session or token rather than client-provided strings.
 
 ## Live deployment
 
@@ -60,12 +66,12 @@ Store → Effects → UI flows.
 
 | Verification | Verified result |
 |---|---:|
-| Jest suites | 19 PASS / 19 total |
-| Jest tests | 101 PASS / 101 total |
-| Statements | 100.00% (700/700) |
-| Branches | 100.00% (84/84) |
-| Functions | 100.00% (26/26) |
-| Lines | 100.00% (700/700) |
+| Jest suites | 17 PASS / 17 total |
+| Jest tests | 113 PASS / 113 total |
+| Statements | 100.00% (639/639) |
+| Branches | 100.00% (96/96) |
+| Functions | 100.00% (24/24) |
+| Lines | 100.00% (639/639) |
 
 The enforced Jest thresholds are Statements/Lines ≥ 98% and
 Branches/Functions ≥ 95%. A deliberately impossible Statements threshold of

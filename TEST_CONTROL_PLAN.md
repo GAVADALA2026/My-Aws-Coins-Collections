@@ -46,29 +46,24 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 | TC-MOD-01 | `Coin` | costruttore completo conserva tutti i sei campi | positivo | PASS |
 | TC-MOD-02 | `Coin` | costruttore senza argomenti inizializza stringhe vuote e valori numerici a zero | boundary | PASS |
 | TC-MOD-03 | `Coin` | valori espliciti `0` per anno e valori monetari restano zero | boundary | PASS |
-| TC-MOD-04 | `User` | costruttore completo conserva username e password | positivo | PASS |
-| TC-MOD-05 | `User` | costruttore vuoto produce credenziali vuote | boundary | PASS |
-| TC-ACT-01 | `signIn` | action contiene type, username e password invariati | positivo | PASS |
-| TC-ACT-02 | `addCoin` | action contiene una coin invariata | positivo | PASS |
-| TC-ACT-03 | `seelCoin` | action contiene l'indice da vendere | positivo | PASS |
-| TC-ACT-04 | `getCoinsCollection*` | azioni richiesta/success/failure espongono type e payload corretti | positivo/errore | PASS |
+| TC-ACT-01 | `addCoin` | action contiene una coin invariata | positivo | PASS |
+| TC-ACT-02 | `seelCoin` | action contiene l'indice da vendere | positivo | PASS |
+| TC-ACT-03 | `getCoinsCollection*` | azioni richiesta/success/failure espongono type e payload corretti | positivo/errore | PASS |
 
 ### Reducer NgRx
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-RED-01 | `loginReducer` | stato iniziale ha credenziali vuote | positivo | PASS |
-| TC-RED-02 | `loginReducer` | `signIn` sostituisce le credenziali e non muta lo stato precedente | positivo | PASS |
-| TC-RED-03 | `coinReducer` | stato iniziale è collezione vuota, non in caricamento e senza errore | positivo | PASS |
-| TC-RED-04 | `coinReducer` | request pone `loading=true` e azzera un errore precedente | positivo | PASS |
-| TC-RED-05 | `coinReducer` | success sostituisce coins, termina loading e azzera errore | positivo | PASS |
-| TC-RED-06 | `coinReducer` | failure mantiene le coin, termina loading e salva il messaggio | errore | PASS |
-| TC-RED-07 | `coinReducer` | vendita con indice valido elimina solo la coin richiesta e mantiene l'ordine | positivo | PASS |
-| TC-RED-08 | `coinReducer` | vendita a indice 0 e ultimo indice gestisce entrambi i limiti | boundary | PASS |
-| TC-RED-09 | `coinReducer` | indice negativo o >= lunghezza avvisa e restituisce lo stesso stato | negativo | PASS |
-| TC-RED-10 | `coinReducer` | `addCoin` antepone la nuova coin senza alterare loading/errore | positivo | PASS |
+| TC-RED-01 | `coinReducer` | stato iniziale è collezione vuota, non in caricamento e senza errore | positivo | PASS |
+| TC-RED-02 | `coinReducer` | request pone `loading=true` e azzera un errore precedente | positivo | PASS |
+| TC-RED-03 | `coinReducer` | success sostituisce coins, termina loading e azzera errore | positivo | PASS |
+| TC-RED-04 | `coinReducer` | failure mantiene le coin, termina loading e salva il messaggio | errore | PASS |
+| TC-RED-05 | `coinReducer` | vendita con indice valido elimina solo la coin richiesta e mantiene l'ordine | positivo | PASS |
+| TC-RED-06 | `coinReducer` | vendita a indice 0 e ultimo indice gestisce entrambi i limiti | boundary | PASS |
+| TC-RED-07 | `coinReducer` | indice negativo o >= lunghezza avvisa e restituisce lo stesso stato | negativo | PASS |
+| TC-RED-08 | `coinReducer` | `addCoin` antepone la nuova coin senza alterare loading/errore | positivo | PASS |
 
-### Pipe, servizio, effect e guard
+### Pipe, servizio ed effect
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
@@ -84,25 +79,12 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 | TC-EFF-03 | `CoinEffects` | errore non-Error produce fallback `Unable to load coins collection` | errore | PASS |
 | TC-EFF-04 | `CoinEffects` | azioni estranee non producono output | negativo | PASS |
 | TC-EFF-05 | `CoinEffects` | una nuova request annulla la richiesta precedente (`switchMap`) | concorrenza | PASS |
-| TC-GRD-01 | `authGuard` | username e password non vuoti consentono `/home` | positivo | PASS |
-| TC-GRD-02 | `authGuard` | username vuoto restituisce UrlTree verso `/` | negativo | PASS |
-| TC-GRD-03 | `authGuard` | password vuota restituisce UrlTree verso `/` | negativo | PASS |
-| TC-GRD-04 | `authGuard` | credenziali formate da soli spazi sono rifiutate | boundary | PASS |
-| TC-GRD-05 | `authGuard` | seleziona una sola emissione dallo Store | async | PASS |
-
-### Login e navigazione
+### Navigazione demo pubblica
 
 | ID | File/area | Caso e risultato atteso | Tipo | Stato |
 |---|---|---|---|---|
-| TC-LOG-01 | `LoginPage` | crea form con username e password e submit inizialmente disabilitato | positivo | PASS |
-| TC-LOG-02 | `LoginPage` | username vuoto produce validazione e non esegue dispatch/navigate | negativo | PASS |
-| TC-LOG-03 | `LoginPage` | password assente produce validazione e non esegue dispatch/navigate | negativo | PASS |
-| TC-LOG-04 | `LoginPage` | password di 7 caratteri è rifiutata | boundary | PASS |
-| TC-LOG-05 | `LoginPage` | password di 8 caratteri e username valido abilitano submit | boundary | PASS |
-| TC-LOG-06 | `LoginPage` | submit valido invia `signIn` con valori immutati | positivo | PASS |
-| TC-LOG-07 | `LoginPage` | submit valido naviga esattamente a `/home` | integrazione | PASS |
-| TC-LOG-08 | route | route vuota visualizza LoginPage | integrazione | PASS |
-| TC-LOG-09 | route | route `/home` è associata ad HomePage e protetta da `authGuard` | integrazione | PASS |
+| TC-RT-01 | route | route vuota visualizza direttamente HomePage senza guardia client | integrazione | PASS |
+| TC-RT-02 | route | route `/home` è associata a HomePage senza guardia client | integrazione | PASS |
 
 ### Creazione di una coin
 
@@ -140,9 +122,7 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 | TC-ITM-04 | `CoinItem` | index 0 è valido e non viene scambiato per assenza | boundary | PASS |
 | TC-ITM-05 | `CoinItem` | click Sell dispatcha `seelCoin` con l'indice corrente | UI | PASS |
 | TC-ITM-06 | template item | mostra flag, nome, anno, descrizione e valori EUR della coin | UI | PASS |
-| TC-WEL-01 | `Welcome` | seleziona username dallo Store | positivo | PASS |
-| TC-WEL-02 | template welcome | username non vuoto è mostrato | UI | PASS |
-| TC-WEL-03 | template welcome | username vuoto visualizza fallback `User` | boundary | PASS |
+| TC-WEL-01 | `Welcome` | mostra il titolo della demo pubblica senza stato utente | positivo | PASS |
 | TC-RES-01 | `ResumeCoinsCollection` | `ngOnInit` seleziona la collezione | positivo | PASS |
 | TC-RES-02 | `ResumeCoinsCollection` | collezione vuota produce numero 0 e valore 0 | boundary | PASS |
 | TC-RES-03 | `ResumeCoinsCollection` | una coin produce count e estimatedValue corretti | positivo | PASS |
@@ -168,7 +148,7 @@ Stato verificato al quality gate: ogni riga del registro è `PASS`; i codici rap
 | 1 | Installazione Jest, preset Angular, jsdom e configurazione zoneless; baseline e inventario | `jest.config.js`, `setup-jest.ts`, `npm test` avviabile |
 | 2 | Modelli, actions, reducer e pipe; correggere i difetti trovati con red/green | test unitari verdi; log difetti aggiornato |
 | 3 | CoinService ed effetti NgRx, inclusi errori e cancellazione `switchMap` | test RxJS/Effects verdi |
-| 4 | authGuard, routes e LoginPage, con validazioni e navigazione | test di autenticazione verdi |
+| 4 | routes demo pubbliche senza login client-side | test di navigazione verdi |
 | 5 | NewCoin, incluse validazione numerica, keydown e paste | test form/UI verdi |
 | 6 | CoinsList e CoinItem, comprese UI loading/error/retry | test collezione verdi |
 | 7 | Welcome, ResumeCoinsCollection, HomePage e App; rendering integrato | test dashboard verdi |

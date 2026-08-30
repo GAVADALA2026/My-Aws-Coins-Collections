@@ -8,7 +8,7 @@ describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
 
   beforeEach(async () => {
-    const state = { user: { username: 'Gabriele', pwd: 'password' }, coinCollection: { coins: [], loading: false, error: null } };
+    const state = { coinCollection: { coins: [], loading: false, error: null } };
     const store = { dispatch: jest.fn(), select: jest.fn((selector) => of(selector(state))) };
     await TestBed.configureTestingModule({
       imports: [HomePage],
